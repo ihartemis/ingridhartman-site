@@ -1,49 +1,527 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{SITE_TITLE}</title>
+		<meta name="description" content={SITE_DESCRIPTION} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			html, body {
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				background: #0a0a0f;
+				font-family: 'Press Start 2P', monospace;
+				color: #c8c8d0;
+				image-rendering: pixelated;
+			}
+
+			.scene {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				height: 100vh;
+				width: 100%;
+				position: relative;
+			}
+
+			/* --- PIXEL ART SCENE --- */
+			.campfire-scene {
+				position: relative;
+				width: 200px;
+				height: 160px;
+				margin-bottom: 40px;
+			}
+
+			/* Old man - pixel art via box shadows */
+			.old-man {
+				position: absolute;
+				left: 20px;
+				bottom: 20px;
+				width: 4px;
+				height: 4px;
+				background: transparent;
+				color: transparent;
+				box-shadow:
+					/* hat */
+					12px -28px 0 0 #4a3728,
+					16px -28px 0 0 #4a3728,
+					20px -28px 0 0 #4a3728,
+					8px -24px 0 0 #4a3728,
+					12px -24px 0 0 #5a4738,
+					16px -24px 0 0 #5a4738,
+					20px -24px 0 0 #5a4738,
+					24px -24px 0 0 #4a3728,
+					/* head */
+					12px -20px 0 0 #e8b878,
+					16px -20px 0 0 #e8b878,
+					20px -20px 0 0 #e8b878,
+					12px -16px 0 0 #e8b878,
+					16px -16px 0 0 #e8b878,
+					20px -16px 0 0 #e8b878,
+					/* eyes */
+					12px -20px 0 0 #e8b878,
+					14px -19px 0 0 #222,
+					20px -19px 0 0 #222,
+					/* beard */
+					8px -12px 0 0 #aaa,
+					12px -12px 0 0 #ccc,
+					16px -12px 0 0 #ccc,
+					20px -12px 0 0 #ccc,
+					24px -12px 0 0 #aaa,
+					12px -8px 0 0 #aaa,
+					16px -8px 0 0 #ccc,
+					20px -8px 0 0 #aaa,
+					/* body / robe */
+					8px -4px 0 0 #3a2a5c,
+					12px -4px 0 0 #4a3a6c,
+					16px -4px 0 0 #4a3a6c,
+					20px -4px 0 0 #4a3a6c,
+					24px -4px 0 0 #3a2a5c,
+					8px 0px 0 0 #3a2a5c,
+					12px 0px 0 0 #4a3a6c,
+					16px 0px 0 0 #4a3a6c,
+					20px 0px 0 0 #4a3a6c,
+					24px 0px 0 0 #3a2a5c,
+					/* feet */
+					8px 4px 0 0 #4a3728,
+					12px 4px 0 0 #4a3728,
+					20px 4px 0 0 #4a3728,
+					24px 4px 0 0 #4a3728;
+				transform: scale(2);
+				transform-origin: bottom left;
+			}
+
+			/* Fire */
+			.fire-container {
+				position: absolute;
+				right: 30px;
+				bottom: 20px;
+				width: 60px;
+				height: 80px;
+			}
+
+			/* Fire logs */
+			.logs {
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 4px;
+				height: 4px;
+				background: transparent;
+				box-shadow:
+					-8px 0 0 0 #5a3a1a,
+					-4px 0 0 0 #6b4423,
+					0px 0 0 0 #5a3a1a,
+					4px 0 0 0 #6b4423,
+					8px 0 0 0 #5a3a1a,
+					-12px -4px 0 0 #6b4423,
+					-4px -4px 0 0 #5a3a1a,
+					0px -4px 0 0 #6b4423,
+					4px -4px 0 0 #5a3a1a,
+					12px -4px 0 0 #6b4423;
+				transform: scale(2);
+			}
+
+			/* Fire flames - animated */
+			.flame {
+				position: absolute;
+				bottom: 16px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 4px;
+				height: 4px;
+				background: transparent;
+				animation: flicker 0.4s infinite alternate;
+			}
+
+			.flame::before {
+				content: '';
+				position: absolute;
+				width: 4px;
+				height: 4px;
+				background: transparent;
+				box-shadow:
+					/* core - bright yellow */
+					0px 0px 0 0 #ffcc33,
+					4px 0px 0 0 #ffcc33,
+					-4px 0px 0 0 #ffcc33,
+					0px -4px 0 0 #ffcc33,
+					4px -4px 0 0 #ffaa00,
+					-4px -4px 0 0 #ffaa00,
+					/* mid - orange */
+					0px -8px 0 0 #ff8800,
+					4px -8px 0 0 #ff6600,
+					-4px -8px 0 0 #ff6600,
+					8px -4px 0 0 #ff6600,
+					-8px -4px 0 0 #ff6600,
+					/* top - red */
+					0px -12px 0 0 #ee4422,
+					4px -12px 0 0 #cc2200,
+					-4px -12px 0 0 #cc2200,
+					0px -16px 0 0 #cc2200;
+				transform: scale(2);
+				animation: flame-dance 0.3s infinite alternate;
+			}
+
+			.flame::after {
+				content: '';
+				position: absolute;
+				width: 4px;
+				height: 4px;
+				background: transparent;
+				box-shadow:
+					4px -4px 0 0 #ffdd44,
+					-4px -8px 0 0 #ffaa00,
+					8px -8px 0 0 #ff8800,
+					-8px 0px 0 0 #ff6600,
+					0px -20px 0 0 #aa1100;
+				transform: scale(2);
+				animation: flame-dance2 0.5s infinite alternate;
+			}
+
+			/* Fire glow */
+			.fire-glow {
+				position: absolute;
+				bottom: 10px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 120px;
+				height: 120px;
+				border-radius: 50%;
+				background: radial-gradient(circle, rgba(255, 140, 50, 0.15) 0%, transparent 70%);
+				animation: glow-pulse 1.5s ease-in-out infinite alternate;
+				pointer-events: none;
+			}
+
+			/* Ground line */
+			.ground {
+				position: absolute;
+				bottom: 16px;
+				left: 0;
+				right: 0;
+				height: 2px;
+				background: #1a1a25;
+			}
+
+			.ground::after {
+				content: '';
+				position: absolute;
+				bottom: -4px;
+				left: 0;
+				right: 0;
+				height: 20px;
+				background: linear-gradient(to bottom, #0f0f18, #0a0a0f);
+			}
+
+			@keyframes flicker {
+				0% { transform: translateX(-50%) translateY(0); }
+				25% { transform: translateX(-50%) translateY(-1px); }
+				50% { transform: translateX(-50%) translateY(1px); }
+				75% { transform: translateX(-49%) translateY(-1px); }
+				100% { transform: translateX(-51%) translateY(0); }
+			}
+
+			@keyframes flame-dance {
+				0% { opacity: 1; transform: scale(2) translateY(0); }
+				100% { opacity: 0.8; transform: scale(2) translateY(-2px); }
+			}
+
+			@keyframes flame-dance2 {
+				0% { opacity: 0.7; transform: scale(2) translateX(1px); }
+				100% { opacity: 1; transform: scale(2) translateX(-1px) translateY(-1px); }
+			}
+
+			@keyframes glow-pulse {
+				0% { opacity: 0.6; transform: translateX(-50%) scale(0.95); }
+				100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+			}
+
+			/* --- DIALOGUE SYSTEM --- */
+			.dialogue-container {
+				position: fixed;
+				bottom: 40px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 90%;
+				max-width: 600px;
+			}
+
+			.dialogue-box {
+				background: #0c0c18;
+				border: 3px solid #3a3a5c;
+				border-radius: 4px;
+				padding: 20px 24px;
+				min-height: 80px;
+				position: relative;
+				box-shadow:
+					0 0 0 1px #1a1a2e,
+					inset 0 0 20px rgba(0,0,0,0.5);
+			}
+
+			.dialogue-box::before {
+				content: '';
+				position: absolute;
+				top: -1px;
+				left: -1px;
+				right: -1px;
+				bottom: -1px;
+				border: 1px solid #2a2a44;
+				border-radius: 5px;
+				pointer-events: none;
+			}
+
+			.dialogue-text {
+				font-size: 11px;
+				line-height: 2;
+				color: #e0e0e8;
+				min-height: 44px;
+			}
+
+			.dialogue-text .cursor {
+				display: inline-block;
+				width: 8px;
+				height: 12px;
+				background: #e0e0e8;
+				animation: blink 0.6s infinite;
+				vertical-align: middle;
+				margin-left: 2px;
+			}
+
+			@keyframes blink {
+				0%, 49% { opacity: 1; }
+				50%, 100% { opacity: 0; }
+			}
+
+			.choices {
+				margin-top: 16px;
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+
+			.choice-btn {
+				background: transparent;
+				border: 2px solid #3a3a5c;
+				color: #c8c8d0;
+				font-family: 'Press Start 2P', monospace;
+				font-size: 10px;
+				padding: 12px 16px;
+				text-align: left;
+				cursor: pointer;
+				transition: all 0.15s;
+				line-height: 1.6;
+			}
+
+			.choice-btn:hover {
+				background: #1a1a30;
+				border-color: #6a6a9c;
+				color: #fff;
+			}
+
+			.choice-btn::before {
+				content: '> ';
+				color: #6a6a9c;
+			}
+
+			.choice-btn:hover::before {
+				color: #ffcc33;
+			}
+
+			/* Hidden state */
+			.hidden {
+				display: none;
+			}
+
+			/* Stars background */
+			.stars {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 60%;
+				pointer-events: none;
+			}
+
+			.star {
+				position: absolute;
+				width: 2px;
+				height: 2px;
+				background: #ffffff;
+				animation: twinkle 3s ease-in-out infinite alternate;
+			}
+
+			@keyframes twinkle {
+				0% { opacity: 0.2; }
+				100% { opacity: 0.8; }
+			}
+
+			/* Mobile */
+			@media (max-width: 600px) {
+				.campfire-scene {
+					transform: scale(0.8);
+					margin-bottom: 20px;
+				}
+				.dialogue-text {
+					font-size: 9px;
+				}
+				.choice-btn {
+					font-size: 8px;
+					padding: 10px 12px;
+				}
+				.dialogue-container {
+					bottom: 20px;
+				}
+			}
+		</style>
 	</head>
 	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
+		<!-- Stars -->
+		<div class="stars" id="stars"></div>
+
+		<!-- Scene -->
+		<div class="scene">
+			<div class="campfire-scene">
+				<div class="ground"></div>
+				<div class="old-man"></div>
+				<div class="fire-container">
+					<div class="fire-glow"></div>
+					<div class="flame"></div>
+					<div class="logs"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Dialogue -->
+		<div class="dialogue-container">
+			<div class="dialogue-box">
+				<div class="dialogue-text" id="dialogue-text"></div>
+				<div class="choices hidden" id="choices"></div>
+			</div>
+		</div>
+
+		<script>
+			const lastUpdated = '2026-02-20';
+
+			function daysSince(dateStr) {
+				const then = new Date(dateStr);
+				const now = new Date();
+				return Math.floor((now.getTime() - then.getTime()) / (1000 * 60 * 60 * 24));
+			}
+
+			const days = daysSince(lastUpdated);
+			const recentlyUpdated = days <= 14;
+
+			const tree = {
+				start: {
+					text: "Welcome, weary traveler. I hear you're looking for Ingrid.",
+					choices: [
+						{ text: "Yes, I am.", next: 'yes' },
+						{ text: "Who's Ingrid?", next: 'who' }
+					]
+				},
+				yes: {
+					text: recentlyUpdated
+						? "She was just here not long ago. Left some new writings by the fire."
+						: "We haven't seen her around here in a while. But she left her writings behind.",
+					choices: [
+						{ text: "Tell me about her adventures.", next: 'adventures' }
+					]
+				},
+				adventures: {
+					text: "Her chronicles are kept in the archives. All sorts of things in there — building, thinking, wandering.",
+					choices: [
+						{ text: "Take me there.", next: '/blog' }
+					]
+				},
+				who: {
+					text: "Ingrid? Builder. Mother. Wanderer. She makes things and writes about making them.",
+					choices: [
+						{ text: "Tell me more.", next: '/about' }
+					]
+				}
+			};
+
+			const textEl = document.getElementById('dialogue-text');
+			const choicesEl = document.getElementById('choices');
+
+			function typeText(text, callback) {
+				textEl.innerHTML = '';
+				choicesEl.classList.add('hidden');
+				choicesEl.innerHTML = '';
+				let i = 0;
+				const cursor = document.createElement('span');
+				cursor.className = 'cursor';
+
+				function tick() {
+					if (i < text.length) {
+						textEl.textContent = text.slice(0, i + 1);
+						textEl.appendChild(cursor);
+						i++;
+						setTimeout(tick, 40);
+					} else {
+						cursor.remove();
+						if (callback) callback();
+					}
+				}
+				tick();
+			}
+
+			function showChoices(choices) {
+				choicesEl.innerHTML = '';
+				choices.forEach(choice => {
+					const btn = document.createElement('button');
+					btn.className = 'choice-btn';
+					btn.textContent = choice.text;
+					btn.addEventListener('click', () => {
+						if (choice.next.startsWith('/')) {
+							window.location.href = choice.next;
+						} else {
+							showNode(choice.next);
+						}
+					});
+					choicesEl.appendChild(btn);
+				});
+				choicesEl.classList.remove('hidden');
+			}
+
+			function showNode(nodeId) {
+				const node = tree[nodeId];
+				typeText(node.text, () => showChoices(node.choices));
+			}
+
+			// Generate stars
+			const starsContainer = document.getElementById('stars');
+			for (let i = 0; i < 40; i++) {
+				const star = document.createElement('div');
+				star.className = 'star';
+				star.style.left = Math.random() * 100 + '%';
+				star.style.top = Math.random() * 100 + '%';
+				star.style.animationDelay = (Math.random() * 3) + 's';
+				star.style.opacity = String(Math.random() * 0.5 + 0.1);
+				starsContainer.appendChild(star);
+			}
+
+			// Start dialogue after a brief pause
+			setTimeout(() => showNode('start'), 800);
+		</script>
 	</body>
 </html>
