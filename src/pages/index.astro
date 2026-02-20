@@ -14,245 +14,53 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		<meta name="description" content={SITE_DESCRIPTION} />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
-		<style>
-			* {
-				margin: 0;
-				padding: 0;
-				box-sizing: border-box;
-			}
+		<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet" />
+		<style is:global>
+			* { margin: 0; padding: 0; box-sizing: border-box; }
 
 			html, body {
 				width: 100%;
 				height: 100%;
 				overflow: hidden;
-				background: #0a0a0f;
-				font-family: 'Press Start 2P', monospace;
+				background: #06060c;
 				color: #c8c8d0;
-				image-rendering: pixelated;
 			}
 
-			.scene {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
+			#scene {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100vw;
 				height: 100vh;
-				width: 100%;
-				position: relative;
+				image-rendering: pixelated;
+				image-rendering: crisp-edges;
+				z-index: 0;
 			}
 
-			/* --- PIXEL ART SCENE --- */
-			.campfire-scene {
-				position: relative;
-				width: 200px;
-				height: 160px;
-				margin-bottom: 40px;
+			/* --- NAV OVERLAY --- */
+			.home-nav {
+				position: fixed;
+				top: 20px;
+				right: 24px;
+				z-index: 100;
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				font-family: 'DM Sans', sans-serif;
+				font-size: 13px;
+				font-weight: 500;
 			}
-
-			/* Old man - pixel art via box shadows */
-			.old-man {
-				position: absolute;
-				left: 20px;
-				bottom: 20px;
-				width: 4px;
-				height: 4px;
-				background: transparent;
-				color: transparent;
-				box-shadow:
-					/* hat */
-					12px -28px 0 0 #4a3728,
-					16px -28px 0 0 #4a3728,
-					20px -28px 0 0 #4a3728,
-					8px -24px 0 0 #4a3728,
-					12px -24px 0 0 #5a4738,
-					16px -24px 0 0 #5a4738,
-					20px -24px 0 0 #5a4738,
-					24px -24px 0 0 #4a3728,
-					/* head */
-					12px -20px 0 0 #e8b878,
-					16px -20px 0 0 #e8b878,
-					20px -20px 0 0 #e8b878,
-					12px -16px 0 0 #e8b878,
-					16px -16px 0 0 #e8b878,
-					20px -16px 0 0 #e8b878,
-					/* eyes */
-					12px -20px 0 0 #e8b878,
-					14px -19px 0 0 #222,
-					20px -19px 0 0 #222,
-					/* beard */
-					8px -12px 0 0 #aaa,
-					12px -12px 0 0 #ccc,
-					16px -12px 0 0 #ccc,
-					20px -12px 0 0 #ccc,
-					24px -12px 0 0 #aaa,
-					12px -8px 0 0 #aaa,
-					16px -8px 0 0 #ccc,
-					20px -8px 0 0 #aaa,
-					/* body / robe */
-					8px -4px 0 0 #3a2a5c,
-					12px -4px 0 0 #4a3a6c,
-					16px -4px 0 0 #4a3a6c,
-					20px -4px 0 0 #4a3a6c,
-					24px -4px 0 0 #3a2a5c,
-					8px 0px 0 0 #3a2a5c,
-					12px 0px 0 0 #4a3a6c,
-					16px 0px 0 0 #4a3a6c,
-					20px 0px 0 0 #4a3a6c,
-					24px 0px 0 0 #3a2a5c,
-					/* feet */
-					8px 4px 0 0 #4a3728,
-					12px 4px 0 0 #4a3728,
-					20px 4px 0 0 #4a3728,
-					24px 4px 0 0 #4a3728;
-				transform: scale(2);
-				transform-origin: bottom left;
+			.home-nav a {
+				color: #c8c8d0;
+				text-decoration: none;
+				opacity: 0.35;
+				transition: opacity 0.2s;
 			}
-
-			/* Fire */
-			.fire-container {
-				position: absolute;
-				right: 30px;
-				bottom: 20px;
-				width: 60px;
-				height: 80px;
-			}
-
-			/* Fire logs */
-			.logs {
-				position: absolute;
-				bottom: 0;
-				left: 50%;
-				transform: translateX(-50%);
-				width: 4px;
-				height: 4px;
-				background: transparent;
-				box-shadow:
-					-8px 0 0 0 #5a3a1a,
-					-4px 0 0 0 #6b4423,
-					0px 0 0 0 #5a3a1a,
-					4px 0 0 0 #6b4423,
-					8px 0 0 0 #5a3a1a,
-					-12px -4px 0 0 #6b4423,
-					-4px -4px 0 0 #5a3a1a,
-					0px -4px 0 0 #6b4423,
-					4px -4px 0 0 #5a3a1a,
-					12px -4px 0 0 #6b4423;
-				transform: scale(2);
-			}
-
-			/* Fire flames - animated */
-			.flame {
-				position: absolute;
-				bottom: 16px;
-				left: 50%;
-				transform: translateX(-50%);
-				width: 4px;
-				height: 4px;
-				background: transparent;
-				animation: flicker 0.4s infinite alternate;
-			}
-
-			.flame::before {
-				content: '';
-				position: absolute;
-				width: 4px;
-				height: 4px;
-				background: transparent;
-				box-shadow:
-					/* core - bright yellow */
-					0px 0px 0 0 #ffcc33,
-					4px 0px 0 0 #ffcc33,
-					-4px 0px 0 0 #ffcc33,
-					0px -4px 0 0 #ffcc33,
-					4px -4px 0 0 #ffaa00,
-					-4px -4px 0 0 #ffaa00,
-					/* mid - orange */
-					0px -8px 0 0 #ff8800,
-					4px -8px 0 0 #ff6600,
-					-4px -8px 0 0 #ff6600,
-					8px -4px 0 0 #ff6600,
-					-8px -4px 0 0 #ff6600,
-					/* top - red */
-					0px -12px 0 0 #ee4422,
-					4px -12px 0 0 #cc2200,
-					-4px -12px 0 0 #cc2200,
-					0px -16px 0 0 #cc2200;
-				transform: scale(2);
-				animation: flame-dance 0.3s infinite alternate;
-			}
-
-			.flame::after {
-				content: '';
-				position: absolute;
-				width: 4px;
-				height: 4px;
-				background: transparent;
-				box-shadow:
-					4px -4px 0 0 #ffdd44,
-					-4px -8px 0 0 #ffaa00,
-					8px -8px 0 0 #ff8800,
-					-8px 0px 0 0 #ff6600,
-					0px -20px 0 0 #aa1100;
-				transform: scale(2);
-				animation: flame-dance2 0.5s infinite alternate;
-			}
-
-			/* Fire glow */
-			.fire-glow {
-				position: absolute;
-				bottom: 10px;
-				left: 50%;
-				transform: translateX(-50%);
-				width: 120px;
-				height: 120px;
-				border-radius: 50%;
-				background: radial-gradient(circle, rgba(255, 140, 50, 0.15) 0%, transparent 70%);
-				animation: glow-pulse 1.5s ease-in-out infinite alternate;
-				pointer-events: none;
-			}
-
-			/* Ground line */
-			.ground {
-				position: absolute;
-				bottom: 16px;
-				left: 0;
-				right: 0;
-				height: 2px;
-				background: #1a1a25;
-			}
-
-			.ground::after {
-				content: '';
-				position: absolute;
-				bottom: -4px;
-				left: 0;
-				right: 0;
-				height: 20px;
-				background: linear-gradient(to bottom, #0f0f18, #0a0a0f);
-			}
-
-			@keyframes flicker {
-				0% { transform: translateX(-50%) translateY(0); }
-				25% { transform: translateX(-50%) translateY(-1px); }
-				50% { transform: translateX(-50%) translateY(1px); }
-				75% { transform: translateX(-49%) translateY(-1px); }
-				100% { transform: translateX(-51%) translateY(0); }
-			}
-
-			@keyframes flame-dance {
-				0% { opacity: 1; transform: scale(2) translateY(0); }
-				100% { opacity: 0.8; transform: scale(2) translateY(-2px); }
-			}
-
-			@keyframes flame-dance2 {
-				0% { opacity: 0.7; transform: scale(2) translateX(1px); }
-				100% { opacity: 1; transform: scale(2) translateX(-1px) translateY(-1px); }
-			}
-
-			@keyframes glow-pulse {
-				0% { opacity: 0.6; transform: translateX(-50%) scale(0.95); }
-				100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+			.home-nav a:hover { opacity: 0.9; }
+			.home-nav .sep {
+				color: #c8c8d0;
+				opacity: 0.2;
+				user-select: none;
 			}
 
 			/* --- DIALOGUE SYSTEM --- */
@@ -263,44 +71,44 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				transform: translateX(-50%);
 				width: 90%;
 				max-width: 600px;
+				z-index: 20;
 			}
 
 			.dialogue-box {
-				background: #0c0c18;
-				border: 3px solid #3a3a5c;
-				border-radius: 4px;
+				background: rgba(6, 6, 14, 0.88);
+				border: 2px solid rgba(80, 60, 40, 0.25);
+				border-radius: 0;
 				padding: 20px 24px;
 				min-height: 80px;
 				position: relative;
+				image-rendering: auto;
 				box-shadow:
-					0 0 0 1px #1a1a2e,
-					inset 0 0 20px rgba(0,0,0,0.5);
+					inset 0 0 0 1px rgba(100, 80, 50, 0.1),
+					0 0 60px rgba(0, 0, 0, 0.6);
 			}
 
 			.dialogue-box::before {
 				content: '';
 				position: absolute;
-				top: -1px;
-				left: -1px;
-				right: -1px;
-				bottom: -1px;
-				border: 1px solid #2a2a44;
-				border-radius: 5px;
+				top: 2px; left: 2px; right: 2px; bottom: 2px;
+				border: 1px solid rgba(80, 60, 40, 0.08);
 				pointer-events: none;
 			}
 
 			.dialogue-text {
+				font-family: 'Press Start 2P', monospace;
 				font-size: 11px;
 				line-height: 2;
-				color: #e0e0e8;
+				color: #e8dcc8;
 				min-height: 44px;
+				text-shadow: 0 0 8px rgba(255, 160, 60, 0.08);
 			}
 
 			.dialogue-text .cursor {
 				display: inline-block;
 				width: 8px;
 				height: 12px;
-				background: #e0e0e8;
+				background: #e8dcc8;
 				animation: blink 0.6s infinite;
 				vertical-align: middle;
 				margin-left: 2px;
@@ -315,102 +123,59 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				margin-top: 16px;
 				display: flex;
 				flex-direction: column;
-				gap: 8px;
+				gap: 6px;
 			}
 
 			.choice-btn {
-				background: transparent;
-				border: 2px solid #3a3a5c;
-				color: #c8c8d0;
+				background: rgba(12, 10, 22, 0.6);
+				border: none;
+				border-left: 3px solid rgba(255, 140, 50, 0.15);
+				color: rgba(200, 190, 170, 0.7);
 				font-family: 'Press Start 2P', monospace;
 				font-size: 10px;
-				padding: 12px 16px;
+				padding: 10px 14px;
 				text-align: left;
 				cursor: pointer;
 				transition: all 0.15s;
-				line-height: 1.6;
+				line-height: 1.8;
+				border-radius: 0;
+				image-rendering: auto;
 			}
 
 			.choice-btn:hover {
-				background: #1a1a30;
-				border-color: #6a6a9c;
-				color: #fff;
+				background: rgba(30, 20, 10, 0.7);
+				border-left-color: rgba(255, 140, 50, 0.6);
+				color: #f0e0c0;
+				text-shadow: 0 0 10px rgba(255, 140, 50, 0.15);
 			}
 
 			.choice-btn::before {
-				content: '> ';
-				color: #6a6a9c;
+				content: '\25B8  ';
+				color: rgba(255, 140, 50, 0.3);
+				transition: color 0.15s;
 			}
 
-			.choice-btn:hover::before {
-				color: #ffcc33;
-			}
+			.choice-btn:hover::before { color: rgba(255, 160, 60, 0.8); }
 
-			/* Hidden state */
-			.hidden {
-				display: none;
-			}
+			.hidden { display: none; }
 
-			/* Stars background */
-			.stars {
-				position: fixed;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 60%;
-				pointer-events: none;
-			}
-
-			.star {
-				position: absolute;
-				width: 2px;
-				height: 2px;
-				background: #ffffff;
-				animation: twinkle 3s ease-in-out infinite alternate;
-			}
-
-			@keyframes twinkle {
-				0% { opacity: 0.2; }
-				100% { opacity: 0.8; }
-			}
-
-			/* Mobile */
 			@media (max-width: 600px) {
-				.campfire-scene {
-					transform: scale(0.8);
-					margin-bottom: 20px;
-				}
-				.dialogue-text {
-					font-size: 9px;
-				}
-				.choice-btn {
-					font-size: 8px;
-					padding: 10px 12px;
-				}
-				.dialogue-container {
-					bottom: 20px;
-				}
+				.dialogue-text { font-size: 9px; }
+				.choice-btn { font-size: 9px; padding: 8px 10px; }
+				.dialogue-container { bottom: 20px; }
+				.home-nav { top: 14px; right: 16px; font-size: 12px; }
 			}
 		</style>
 	</head>
 	<body>
-		<!-- Stars -->
-		<div class="stars" id="stars"></div>
+		<nav class="home-nav">
+			<a href="/blog">Blog</a>
+			<span class="sep">/</span>
+			<a href="/about">About</a>
+		</nav>
 
-		<!-- Scene -->
-		<div class="scene">
-			<div class="campfire-scene">
-				<div class="ground"></div>
-				<div class="old-man"></div>
-				<div class="fire-container">
-					<div class="fire-glow"></div>
-					<div class="flame"></div>
-					<div class="logs"></div>
-				</div>
-			</div>
-		</div>
+		<canvas id="scene"></canvas>
 
-		<!-- Dialogue -->
 		<div class="dialogue-container">
 			<div class="dialogue-box">
 				<div class="dialogue-text" id="dialogue-text"></div>
@@ -419,6 +184,862 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		</div>
 
 		<script>
+		// ============================================================
+		// CANVAS PIXEL ART SCENE RENDERER
+		// ============================================================
+
+		(function() {
+			const canvas = document.getElementById('scene');
+			const ctx = canvas.getContext('2d');
+
+			// --- Resolution ---
+			const BASE_H = 216;
+			let W, H;
+
+			function calcSize() {
+				const aspect = window.innerWidth / window.innerHeight;
+				H = BASE_H;
+				W = Math.round(H * aspect);
+				canvas.width = W;
+				canvas.height = H;
+			}
+			calcSize();
+
+			// --- Seeded PRNG ---
+			function mulberry32(seed) {
+				return function() {
+					seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+					let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+					t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+					return ((t ^ t >>> 14) >>> 0) / 4294967296;
+				};
+			}
+			const rng = mulberry32(42069);
+
+			// --- Color Helpers ---
+			function lerpColor(c1, c2, t) {
+				const r1 = parseInt(c1.slice(1,3),16), g1 = parseInt(c1.slice(3,5),16), b1 = parseInt(c1.slice(5,7),16);
+				const r2 = parseInt(c2.slice(1,3),16), g2 = parseInt(c2.slice(3,5),16), b2 = parseInt(c2.slice(5,7),16);
+				const r = Math.round(r1 + (r2 - r1) * t);
+				const g = Math.round(g1 + (g2 - g1) * t);
+				const b = Math.round(b1 + (b2 - b1) * t);
+				return `rgb(${r},${g},${b})`;
+			}
+
+			function hexToRgb(hex) {
+				return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+			}
+
+			// ============================================================
+			// SPRITE SYSTEM
+			// ============================================================
+
+			function drawSprite(sprite, x, y) {
+				const { palette, rows } = sprite;
+				for (let row = 0; row < rows.length; row++) {
+					const line = rows[row];
+					for (let col = 0; col < line.length; col++) {
+						const ch = line[col];
+						if (ch === '.') continue;
+						const idx = parseInt(ch, 36);
+						ctx.fillStyle = palette[idx];
+						ctx.fillRect(x + col, y + row, 1, 1);
+					}
+				}
+			}
+
+			// ============================================================
+			// SPRITE DEFINITIONS
+			// ============================================================
+
+			const SPRITES = {};
+
+			// Old Man — seated with walking stick (~22w x 32h)
+			SPRITES.oldMan = {
+				palette: [
+					'#7a5a38', // 0 hat dark
+					'#8a6a48', // 1 hat mid
+					'#9a7a58', // 2 hat light
+					'#aa8a68', // 3 hat highlight
+					'#d4a06a', // 4 skin shadow
+					'#e8b878', // 5 skin
+					'#f0c888', // 6 skin highlight
+					'#1a1a22', // 7 eyes
+					'#cc9460', // 8 nose
+					'#888888', // 9 beard dark
+					'#aaaaaa', // a beard mid
+					'#cccccc', // b beard light
+					'#dddddd', // c beard bright
+					'#2e2258', // d robe darkest
+					'#3c2e66', // e robe dark
+					'#4e3e78', // f robe mid
+					'#604e8a', // g robe light
+					'#725e9c', // h robe highlight
+					'#5a4430', // i boot dark
+					'#6b5438', // j boot light
+					'#8a6838', // k stick mid
+					'#7a5830', // l stick dark
+					'#9a7848', // m stick bright
+					'#6a4c28', // n stick bottom
+					'#443670', // o robe fold
+				],
+				rows: [
+					'..............m.....',
+					'..............k.....',
+					'..............l.....',
+					'.....011110...k.....',
+					'....01222110..l.....',
+					'...0122332210.k.....',
+					'...0122332210.l.....',
+					'....4566654...k.....',
+					'....5756575...l.....',
+					'....5566655...k.....',
+					'....4568654...l.....',
+					'...9aaabbba9..k.....',
+					'...9aabccba9..l.....',
+					'....abccba....k.....',
+					'......abba....l.....',
+					'......9aa9....k.....',
+					'...eeffggffe..l.....',
+					'..eefgghggfee.k.....',
+					'..efgghhggfe..l.....',
+					'..efgghhggfe..k.....',
+					'..dfgghhggfd..l.....',
+					'..dfoggggofde.k.....',
+					'..dfoggggofd..l.....',
+					'..defoggofed..k.....',
+					'...defffed....l.....',
+					'...ddeefedd...k.....',
+					'....ddeedd....l.....',
+					'.....dddd.....k.....',
+					'....ij..ij....l.....',
+					'....ij..ij....n.....',
+				]
+			};
+
+			// Tent (~26w x 20h)
+			SPRITES.tent = {
+				palette: [
+					'#0e0e1a', // 0 darkest
+					'#12101e', // 1
+					'#161424', // 2
+					'#1a1628', // 3
+					'#1e1a2c', // 4
+					'#221e32', // 5
+					'#262236', // 6
+					'#2a263a', // 7
+					'#08080f', // 8 opening
+					'#0a0a14', // 9 opening edge
+					'#302a40', // a tent highlight
+					'#181420', // b rope
+				],
+				rows: [
+					'............67..............',
+					'...........5665.............',
+					'..........566765............',
+					'.........5667765............',
+					'........456677654...........',
+					'.......45667776543..........',
+					'......4566777765432.........',
+					'.....456677776654321........',
+					'....45667a77766543210.......',
+					'...4566777776655432100......',
+					'..456677777766554321000.....',
+					'.45667777777665543210000....',
+					'4566777777766554321000000...',
+					'4566777777665543210000000...',
+					'4566777898765432100000000...',
+					'4566777888765432100000000...',
+					'456677.888.65432100000000...',
+					'45667..888..5432100000000...',
+					'4566...888...432100000000...',
+					'456....888....32100000000...',
+				]
+			};
+
+			// Fire Frame 1 (~12w x 16h)
+			SPRITES.fire1 = {
+				palette: [
+					'#ffee77', // 0 white-yellow core
+					'#ffdd55', // 1 bright yellow
+					'#ffcc33', // 2 yellow
+					'#ffaa00', // 3 orange-yellow
+					'#ff8800', // 4 orange
+					'#ff6600', // 5 dark orange
+					'#ee4422', // 6 red-orange
+					'#cc2200', // 7 red
+					'#aa1100', // 8 dark red
+					'#881100', // 9 darkest
+				],
+				rows: [
+					'......9.....',
+					'.....98.....',
+					'....887.....',
+					'....876.....',
+					'...8765.....',
+					'...76654....',
+					'..676554....',
+					'..665543....',
+					'..5554432...',
+					'.55443321...',
+					'.5443221....',
+					'.44332110...',
+					'..3322110...',
+					'..2211100...',
+					'...11000....',
+					'....000.....',
+				]
+			};
+
+			// Fire Frame 2
+			SPRITES.fire2 = {
+				palette: SPRITES.fire1.palette,
+				rows: [
+					'....9.......',
+					'....89......',
+					'...887......',
+					'...8765.....',
+					'..87654.....',
+					'..776543....',
+					'..665543....',
+					'.6655432....',
+					'.55544321...',
+					'.544332110..',
+					'.54432110...',
+					'..4332110...',
+					'..33221100..',
+					'...221100...',
+					'...11000....',
+					'....000.....',
+				]
+			};
+
+			// Fire Frame 3
+			SPRITES.fire3 = {
+				palette: SPRITES.fire1.palette,
+				rows: [
+					'.....9......',
+					'....989.....',
+					'....887.....',
+					'...88765....',
+					'...7765.....',
+					'..776544....',
+					'..6655432...',
+					'.66554432...',
+					'.555443210..',
+					'.55443210...',
+					'.5443321....',
+					'..443210....',
+					'..3322100...',
+					'...22100....',
+					'...11000....',
+					'....000.....',
+				]
+			};
+
+			// Logs (~14w x 4h)
+			SPRITES.logs = {
+				palette: [
+					'#4a2a10', // 0 dark
+					'#5a3a1a', // 1 mid
+					'#6b4423', // 2 light
+					'#7a5430', // 3 highlight
+					'#aa4400', // 4 ember
+					'#cc5500', // 5 ember bright
+					'#3a2008', // 6 darkest
+				],
+				rows: [
+					'..012321210..',
+					'.01234432100.',
+					'0123214321010',
+					'612105012160.',
+				]
+			};
+
+			// Kettle (~8w x 10h)
+			SPRITES.kettle = {
+				palette: [
+					'#222228', // 0 darkest
+					'#2a2a32', // 1 dark
+					'#33333c', // 2 mid
+					'#3c3c46', // 3 light
+					'#464650', // 4 highlight
+					'#555560', // 5 brightest
+					'#1a1a22', // 6 handle
+				],
+				rows: [
+					'...66...',
+					'...65...',
+					'..1232..',
+					'.123432.',
+					'.124542.',
+					'.123432.',
+					'.012321.',
+					'..0120..',
+				]
+			};
+
+			// Moon crescent (~7w x 9h)
+			SPRITES.moon = {
+				palette: [
+					'#c8c0a8', // 0 bright
+					'#a8a090', // 1 mid
+					'#888070', // 2 dim
+					'#d8d0b8', // 3 brightest
+				],
+				rows: [
+					'..0011.',
+					'.00031.',
+					'000301.',
+					'003301.',
+					'003001.',
+					'000001.',
+					'.00011.',
+					'..0011.',
+					'...01..',
+				]
+			};
+
+			// ============================================================
+			// PROCEDURAL GENERATION
+			// ============================================================
+
+			// --- Sky Gradient Colors ---
+			const SKY_COLORS = [
+				{ pos: 0.0,  color: '#050510' },
+				{ pos: 0.1,  color: '#080816' },
+				{ pos: 0.25, color: '#0c0b1e' },
+				{ pos: 0.4,  color: '#100e24' },
+				{ pos: 0.55, color: '#14122a' },
+				{ pos: 0.7,  color: '#181430' },
+				{ pos: 0.85, color: '#1a1632' },
+				{ pos: 1.0,  color: '#1c1834' },
+			];
+
+			function getSkyColor(t) {
+				for (let i = 0; i < SKY_COLORS.length - 1; i++) {
+					if (t >= SKY_COLORS[i].pos && t <= SKY_COLORS[i+1].pos) {
+						const local = (t - SKY_COLORS[i].pos) / (SKY_COLORS[i+1].pos - SKY_COLORS[i].pos);
+						return lerpColor(SKY_COLORS[i].color, SKY_COLORS[i+1].color, local);
+					}
+				}
+				return SKY_COLORS[SKY_COLORS.length-1].color;
+			}
+
+			// --- Stars ---
+			const stars = [];
+			for (let i = 0; i < 110; i++) {
+				stars.push({
+					x: Math.floor(rng() * 500),
+					y: Math.floor(rng() * BASE_H * 0.58),
+					bright: 0.2 + rng() * 0.8,
+					phase: rng() * Math.PI * 2,
+					speed: 0.4 + rng() * 1.2,
+					size: rng() < 0.12 ? 2 : 1
+				});
+			}
+
+			// --- Mountains (midpoint displacement) ---
+			function generateMountains(width, baseY, minH, maxH, roughness) {
+				const h = new Float32Array(width);
+				h[0] = baseY - (minH + rng() * (maxH - minH));
+				h[width-1] = baseY - (minH + rng() * (maxH - minH));
+
+				function subdivide(l, r, scale) {
+					if (r - l < 2) return;
+					const mid = (l + r) >> 1;
+					h[mid] = (h[l] + h[r]) / 2 + (rng() - 0.5) * scale;
+					subdivide(l, mid, scale * roughness);
+					subdivide(mid, r, scale * roughness);
+				}
+				subdivide(0, width - 1, maxH * 0.6);
+				return h;
+			}
+
+			// We generate these at a large width and sample
+			const mtnWidth = 500;
+			const groundTop = Math.floor(BASE_H * 0.62);
+			const farMtn = generateMountains(mtnWidth, groundTop, 15, 45, 0.55);
+			const midMtn = generateMountains(mtnWidth, groundTop, 10, 35, 0.5);
+			const nearMtn = generateMountains(mtnWidth, groundTop, 5, 25, 0.45);
+
+			// --- Treeline ---
+			const trees = [];
+			{
+				let x = 0;
+				while (x < mtnWidth) {
+					const h = 5 + Math.floor(rng() * 14);
+					trees.push({ x, h, shade: rng() < 0.5 ? 0 : 1 });
+					x += 2 + Math.floor(rng() * 5);
+				}
+			}
+
+			// --- Ground Noise Texture (pre-generate) ---
+			const groundNoise = new Float32Array(mtnWidth * 80);
+			for (let i = 0; i < groundNoise.length; i++) {
+				groundNoise[i] = (rng() - 0.5) * 8;
+			}
+
+			// --- Grass tufts ---
+			const grassTufts = [];
+			for (let i = 0; i < 200; i++) {
+				grassTufts.push({
+					x: Math.floor(rng() * mtnWidth),
+					h: 1 + Math.floor(rng() * 3),
+					shade: Math.floor(rng() * 3)
+				});
+			}
+
+			// --- Rocks ---
+			const rocks = [];
+			for (let i = 0; i < 20; i++) {
+				rocks.push({
+					x: Math.floor(rng() * mtnWidth),
+					y: 3 + Math.floor(rng() * 50),
+					w: 2 + Math.floor(rng() * 3),
+					h: 1 + Math.floor(rng() * 2),
+					shade: Math.floor(rng() * 2)
+				});
+			}
+
+			// --- Foreground grass ---
+			const fgGrass = [];
+			for (let i = 0; i < 150; i++) {
+				fgGrass.push({
+					x: Math.floor(rng() * mtnWidth),
+					h: 2 + Math.floor(rng() * 5),
+					shade: Math.floor(rng() * 3)
+				});
+			}
+
+			// --- Clouds ---
+			const clouds = [];
+			for (let i = 0; i < 3; i++) {
+				const cx = Math.floor(rng() * mtnWidth);
+				const cy = 15 + Math.floor(rng() * 40);
+				const segments = [];
+				const len = 15 + Math.floor(rng() * 30);
+				for (let j = 0; j < len; j++) {
+					const dy = Math.floor((rng() - 0.5) * 4);
+					const thick = 1 + Math.floor(rng() * 2);
+					segments.push({ dx: j, dy, thick });
+				}
+				clouds.push({ x: cx, y: cy, segments, speed: 0.01 + rng() * 0.02 });
+			}
+
+			// --- Embers ---
+			const embers = [];
+			for (let i = 0; i < 18; i++) {
+				embers.push(spawnEmber());
+			}
+			function spawnEmber() {
+				return {
+					x: 0, y: 0,
+					vx: (rng() - 0.5) * 0.3,
+					vy: -(0.2 + rng() * 0.6),
+					life: 0.3 + rng() * 1.2,
+					maxLife: 0,
+					bright: rng()
+				};
+			}
+			function resetEmber(e, fx, fy) {
+				e.x = fx + (rng() - 0.5) * 6;
+				e.y = fy - 4 + rng() * 4;
+				e.vx = (rng() - 0.5) * 0.3;
+				e.vy = -(0.2 + rng() * 0.6);
+				e.life = 0.5 + rng() * 1.0;
+				e.maxLife = e.life;
+				e.bright = rng();
+			}
+
+			// --- Fireflies ---
+			const fireflies = [];
+			for (let i = 0; i < 3; i++) {
+				fireflies.push({
+					x: 40 + rng() * 200,
+					y: groundTop - 20 + rng() * 30,
+					angle: rng() * Math.PI * 2,
+					radius: 3 + rng() * 5,
+					speed: 0.02 + rng() * 0.03,
+					blinkPhase: rng() * Math.PI * 2
+				});
+			}
+
+			// ============================================================
+			// DRAW FUNCTIONS
+			// ============================================================
+
+			function drawSky() {
+				const skyH = groundTop + 5;
+				for (let y = 0; y < skyH; y++) {
+					ctx.fillStyle = getSkyColor(y / skyH);
+					ctx.fillRect(0, y, W, 1);
+				}
+			}
+
+			function drawStars(time) {
+				for (const s of stars) {
+					if (s.x >= W) continue;
+					const alpha = s.bright * (0.5 + 0.5 * Math.sin(time * s.speed + s.phase));
+					if (alpha < 0.08) continue;
+					const bright = Math.floor(180 + alpha * 75);
+					ctx.fillStyle = `rgba(${bright},${bright},${Math.min(255, bright + 20)},${alpha})`;
+					ctx.fillRect(s.x, s.y, s.size, s.size);
+				}
+			}
+
+			function drawMoon() {
+				drawSprite(SPRITES.moon, Math.floor(W * 0.18), 22);
+			}
+
+			function drawClouds(time) {
+				for (const cloud of clouds) {
+					const ox = (time * cloud.speed * 60) % W;
+					for (const seg of cloud.segments) {
+						const px = Math.floor((cloud.x + seg.dx + ox) % W);
+						for (let t = 0; t < seg.thick; t++) {
+							const py = cloud.y + seg.dy + t;
+							if (py < 0 || py >= groundTop) continue;
+							ctx.fillStyle = 'rgba(30,28,44,0.35)';
+							ctx.fillRect(px, py, 1, 1);
+						}
+					}
+				}
+			}
+
+			function drawMountainRange(heights, color) {
+				const [r, g, b] = hexToRgb(color);
+				ctx.fillStyle = color;
+				for (let x = 0; x < W; x++) {
+					const hIdx = Math.min(x, heights.length - 1);
+					const top = Math.floor(heights[hIdx]);
+					if (top < groundTop + 5) {
+						ctx.fillRect(x, top, 1, groundTop + 5 - top);
+					}
+				}
+			}
+
+			function drawTreeline() {
+				const colors = ['#0e0e20', '#0c0c1c', '#100f22'];
+				for (const tree of trees) {
+					if (tree.x >= W) continue;
+					const baseY = groundTop + 1;
+					for (let row = 0; row < tree.h; row++) {
+						const span = Math.max(1, Math.floor((row / tree.h) * (tree.h / 2.5)));
+						ctx.fillStyle = colors[tree.shade + (row % 2)];
+						for (let dx = -span; dx <= span; dx++) {
+							const px = tree.x + dx;
+							if (px >= 0 && px < W) {
+								ctx.fillRect(px, baseY - tree.h + row, 1, 1);
+							}
+						}
+					}
+				}
+			}
+
+			function drawGround() {
+				const baseColors = [
+					[18, 15, 26],  // top — slightly purple-brown
+					[14, 12, 22],  // mid
+					[11, 10, 18],  // bottom
+				];
+				const groundH = H - groundTop;
+
+				for (let y = 0; y < groundH; y++) {
+					const t = y / groundH;
+					const ci = t < 0.5 ? 0 : 1;
+					const ci2 = t < 0.5 ? 1 : 2;
+					const lt = t < 0.5 ? t * 2 : (t - 0.5) * 2;
+					const br = baseColors[ci], br2 = baseColors[ci2];
+
+					for (let x = 0; x < W; x++) {
+						const ni = (y * mtnWidth + (x % mtnWidth));
+						const noise = groundNoise[ni % groundNoise.length];
+						const r = Math.max(0, Math.min(255, Math.round(br[0] + (br2[0] - br[0]) * lt + noise)));
+						const g = Math.max(0, Math.min(255, Math.round(br[1] + (br2[1] - br[1]) * lt + noise)));
+						const b = Math.max(0, Math.min(255, Math.round(br[2] + (br2[2] - br[2]) * lt + noise)));
+						ctx.fillStyle = `rgb(${r},${g},${b})`;
+						ctx.fillRect(x, groundTop + y, 1, 1);
+					}
+				}
+
+				// Grass tufts along top
+				const grassColors = ['#101a10', '#0e160e', '#141e14'];
+				for (const tuft of grassTufts) {
+					if (tuft.x >= W) continue;
+					ctx.fillStyle = grassColors[tuft.shade];
+					for (let dy = 0; dy < tuft.h; dy++) {
+						ctx.fillRect(tuft.x, groundTop - dy, 1, 1);
+					}
+				}
+
+				// Rocks
+				const rockColors = ['#1a1824', '#201e2a'];
+				for (const rock of rocks) {
+					if (rock.x >= W) continue;
+					ctx.fillStyle = rockColors[rock.shade];
+					ctx.fillRect(rock.x, groundTop + rock.y, rock.w, rock.h);
+				}
+			}
+
+			function drawForeground() {
+				const colors = ['#080c08', '#0a0e0a', '#060a06'];
+				for (const g of fgGrass) {
+					if (g.x >= W) continue;
+					ctx.fillStyle = colors[g.shade];
+					for (let dy = 0; dy < g.h; dy++) {
+						ctx.fillRect(g.x, H - 1 - dy, 1, 1);
+					}
+				}
+			}
+
+			function drawEmbers(fx, fy) {
+				for (const e of embers) {
+					if (e.life <= 0) continue;
+					const t = 1 - (e.life / e.maxLife);
+					const r = Math.floor(255 - t * 100);
+					const g = Math.floor(200 - t * 180);
+					const b = Math.floor(50 - t * 50);
+					const a = Math.max(0, e.life / e.maxLife);
+					ctx.fillStyle = `rgba(${r},${g},${Math.max(0,b)},${a})`;
+					ctx.fillRect(Math.floor(e.x), Math.floor(e.y), 1, 1);
+				}
+			}
+
+			function drawFireflies(time) {
+				for (const ff of fireflies) {
+					const blink = Math.sin(time * 1.5 + ff.blinkPhase);
+					if (blink < 0.3) continue;
+					const x = Math.floor(ff.x + Math.cos(ff.angle) * ff.radius);
+					const y = Math.floor(ff.y + Math.sin(ff.angle) * ff.radius);
+					const a = (blink - 0.3) / 0.7;
+					ctx.fillStyle = `rgba(170,190,80,${a * 0.7})`;
+					ctx.fillRect(x, y, 1, 1);
+				}
+			}
+
+			// --- Fire Glow (per-pixel ImageData pass) ---
+			function applyFireGlow(fireCX, fireCY, intensity) {
+				const imageData = ctx.getImageData(0, 0, W, H);
+				const data = imageData.data;
+				const maxDist = Math.floor(W * 0.38);
+				const maxDistSq = maxDist * maxDist;
+
+				// Only iterate bounding box
+				const x0 = Math.max(0, fireCX - maxDist);
+				const x1 = Math.min(W, fireCX + maxDist);
+				const y0 = Math.max(0, fireCY - maxDist);
+				const y1 = Math.min(H, fireCY + maxDist);
+
+				for (let y = y0; y < y1; y++) {
+					for (let x = x0; x < x1; x++) {
+						const dx = x - fireCX;
+						const dy = (y - fireCY) * 1.1;
+						const distSq = dx * dx + dy * dy;
+						if (distSq > maxDistSq) continue;
+
+						const dist = Math.sqrt(distSq);
+						const falloff = 1 - (dist / maxDist);
+						// Stronger cubic falloff for more dramatic close-range glow
+						const glow = falloff * falloff * falloff * intensity * 1.8;
+
+						const idx = (y * W + x) * 4;
+						data[idx]     = Math.min(255, data[idx] + Math.floor(glow * 120));
+						data[idx + 1] = Math.min(255, data[idx + 1] + Math.floor(glow * 50));
+						data[idx + 2] = Math.max(0, data[idx + 2] - Math.floor(glow * 12));
+					}
+				}
+
+				ctx.putImageData(imageData, 0, 0);
+			}
+
+			// --- Dither Overlay ---
+			const BAYER4 = [
+				[0, 8, 2, 10],
+				[12, 4, 14, 6],
+				[3, 11, 1, 9],
+				[15, 7, 13, 5]
+			];
+
+			function applyDither() {
+				const imageData = ctx.getImageData(0, 0, W, H);
+				const data = imageData.data;
+				const strength = 2.5;
+
+				for (let y = 0; y < H; y++) {
+					for (let x = 0; x < W; x++) {
+						const threshold = (BAYER4[y & 3][x & 3] / 16 - 0.5) * strength;
+						const idx = (y * W + x) * 4;
+						data[idx]     = Math.min(255, Math.max(0, data[idx] + threshold));
+						data[idx + 1] = Math.min(255, Math.max(0, data[idx + 1] + threshold));
+						data[idx + 2] = Math.min(255, Math.max(0, data[idx + 2] + threshold));
+					}
+				}
+
+				ctx.putImageData(imageData, 0, 0);
+			}
+
+			// ============================================================
+			// SCENE LAYOUT
+			// ============================================================
+
+			function getLayout() {
+				const fireX = Math.floor(W * 0.54);
+				const fireBaseY = groundTop + 2;
+				return {
+					tentX: Math.floor(W * 0.28),
+					tentY: groundTop - 18,
+					manX: Math.floor(W * 0.42),
+					manY: groundTop - 28,
+					fireX: fireX,
+					fireBaseY: fireBaseY,
+					logsX: fireX - 6,
+					logsY: fireBaseY - 1,
+					kettleX: fireX + 9,
+					kettleY: fireBaseY - 7,
+					moonX: Math.floor(W * 0.18),
+					moonY: 22,
+					fireCenterX: fireX,
+					fireCenterY: fireBaseY - 8,
+				};
+			}
+
+			// ============================================================
+			// ANIMATION LOOP
+			// ============================================================
+
+			const TARGET_FPS = 12;
+			const FRAME_INTERVAL = 1000 / TARGET_FPS;
+			let lastFrameTime = 0;
+			let frameCount = 0;
+			let fireFrame = 0;
+			let cloudOffset = 0;
+			let glowIntensity = 0.85;
+
+			const fireFrames = [SPRITES.fire1, SPRITES.fire2, SPRITES.fire3];
+
+			function update(frame) {
+				fireFrame = Math.floor(frame / 4) % 3;
+				cloudOffset += 0.02;
+				glowIntensity = 0.75 + 0.25 * Math.sin(frame * 0.12);
+
+				const layout = getLayout();
+
+				// Update embers
+				for (const e of embers) {
+					e.x += e.vx + (rng() - 0.5) * 0.15;
+					e.y += e.vy;
+					e.life -= 0.04;
+					if (e.life <= 0) {
+						resetEmber(e, layout.fireX, layout.fireBaseY - 10);
+					}
+				}
+
+				// Init embers on first frame
+				if (frame === 1) {
+					for (const e of embers) {
+						resetEmber(e, layout.fireX, layout.fireBaseY - 10);
+					}
+				}
+
+				// Update fireflies
+				for (const ff of fireflies) {
+					ff.angle += ff.speed;
+				}
+			}
+
+			function render(frame) {
+				const time = frame / TARGET_FPS;
+				const layout = getLayout();
+
+				// 1. Sky
+				drawSky();
+
+				// 2. Stars
+				drawStars(time);
+
+				// 3. Moon
+				drawMoon();
+
+				// 4. Clouds
+				drawClouds(time);
+
+				// 5-7. Mountains (far to near)
+				drawMountainRange(farMtn, '#1e1a30');
+				drawMountainRange(midMtn, '#16142a');
+				drawMountainRange(nearMtn, '#101024');
+
+				// 8. Treeline
+				drawTreeline();
+
+				// 9. Ground
+				drawGround();
+
+				// 10. Tent
+				drawSprite(SPRITES.tent, layout.tentX, layout.tentY);
+
+				// 11. Old Man
+				drawSprite(SPRITES.oldMan, layout.manX, layout.manY);
+
+				// 12. Logs
+				drawSprite(SPRITES.logs, layout.logsX, layout.logsY);
+
+				// 13. Fire (animated)
+				drawSprite(fireFrames[fireFrame], layout.fireX - 5, layout.fireBaseY - 16);
+
+				// 14. Kettle
+				drawSprite(SPRITES.kettle, layout.kettleX, layout.kettleY);
+
+				// 15. Foreground
+				drawForeground();
+
+				// 16. Particles
+				drawEmbers(layout.fireX, layout.fireBaseY);
+				drawFireflies(time);
+
+				// 17. Fire glow
+				applyFireGlow(layout.fireCenterX, layout.fireCenterY, glowIntensity);
+
+				// 18. Dither
+				applyDither();
+			}
+
+			function gameLoop(timestamp) {
+				requestAnimationFrame(gameLoop);
+
+				const delta = timestamp - lastFrameTime;
+				if (delta < FRAME_INTERVAL) return;
+				lastFrameTime = timestamp - (delta % FRAME_INTERVAL);
+
+				frameCount++;
+				update(frameCount);
+				render(frameCount);
+			}
+
+			// --- Init ---
+			// Initial render
+			update(1);
+			render(1);
+
+			// Start animation
+			requestAnimationFrame(gameLoop);
+
+			// Resize handler
+			let resizeTimer;
+			window.addEventListener('resize', () => {
+				clearTimeout(resizeTimer);
+				resizeTimer = setTimeout(() => {
+					calcSize();
+					render(frameCount);
+				}, 200);
+			});
+		})();
+
+		// ============================================================
+		// DIALOGUE SYSTEM (unchanged)
+		// ============================================================
+
+		(function() {
 			const lastUpdated = '2026-02-20';
 
 			function daysSince(dateStr) {
@@ -459,6 +1080,44 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 					]
 				}
 			};
+
+			const welcomeBackQuips = [
+				{
+					text: "Back again? She still hasn't returned.",
+					choices: [
+						{ text: "Any idea when she'll be back?", next: 'yes' },
+						{ text: "I'll read what she left behind.", next: 'adventures' }
+					]
+				},
+				{
+					text: "Ah, you again. Make yourself comfortable.",
+					choices: [
+						{ text: "Don't mind if I do.", next: 'yes' },
+						{ text: "What's new around here?", next: 'adventures' }
+					]
+				},
+				{
+					text: "The fire's still burning. Help yourself to some warmth.",
+					choices: [
+						{ text: "Thanks, old man.", next: 'yes' },
+						{ text: "Got any new stories?", next: 'adventures' }
+					]
+				},
+				{
+					text: "You keep coming back. I like that about you.",
+					choices: [
+						{ text: "Hard to stay away.", next: 'yes' },
+						{ text: "Show me something new.", next: 'adventures' }
+					]
+				},
+				{
+					text: "Same fire, same stories. Unless you've brought new ones.",
+					choices: [
+						{ text: "Let me check the archives.", next: 'adventures' },
+						{ text: "Tell me about Ingrid again.", next: 'who' }
+					]
+				}
+			];
 
 			const textEl = document.getElementById('dialogue-text');
 			const choicesEl = document.getElementById('choices');
@@ -505,23 +1164,24 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 			function showNode(nodeId) {
 				const node = tree[nodeId];
-				typeText(node.text, () => showChoices(node.choices));
+				typeText(node.text, () => {
+					showChoices(node.choices);
+					if (!sessionStorage.getItem('visited')) {
+						sessionStorage.setItem('visited', 'true');
+					}
+				});
 			}
 
-			// Generate stars
-			const starsContainer = document.getElementById('stars');
-			for (let i = 0; i < 40; i++) {
-				const star = document.createElement('div');
-				star.className = 'star';
-				star.style.left = Math.random() * 100 + '%';
-				star.style.top = Math.random() * 100 + '%';
-				star.style.animationDelay = (Math.random() * 3) + 's';
-				star.style.opacity = String(Math.random() * 0.5 + 0.1);
-				starsContainer.appendChild(star);
-			}
-
-			// Start dialogue after a brief pause
-			setTimeout(() => showNode('start'), 800);
+			setTimeout(() => {
+				const visited = sessionStorage.getItem('visited');
+				if (visited) {
+					const quip = welcomeBackQuips[Math.floor(Math.random() * welcomeBackQuips.length)];
+					typeText(quip.text, () => showChoices(quip.choices));
+				} else {
+					showNode('start');
+				}
+			}, 800);
+		})();
 		</script>
 	</body>
 </html>

@@ -44,15 +44,23 @@ import { SITE_TITLE } from '../consts';
 
 <style>
 	main {
-		max-width: 600px;
+		max-width: 65ch;
 	}
 	h1 {
-		margin-bottom: 2em;
+		margin-bottom: 1.5em;
+		color: var(--text-bright);
+	}
+	p {
+		font-size: 18px;
+		line-height: 1.8;
+		color: var(--text);
 	}
 	.links {
 		margin-top: 2em;
 		padding-top: 2em;
-		border-top: 1px solid var(--border);
+		border-top: 1px solid rgba(180,120,50,0.12);
+		font-family: var(--font-heading);
+		font-size: 14px;
 	}
 	.links a {
 		color: var(--accent);
@@ -61,7 +69,7 @@ import { SITE_TITLE } from '../consts';
 		color: var(--accent-hover);
 	}
 	.sep {
-		color: var(--text-dim);
+		color: #4a3e30;
 		margin: 0 0.5em;
 	}
 </style>

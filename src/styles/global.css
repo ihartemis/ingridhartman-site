@@ -1,28 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
 :root {
-	--bg: #0a0a0f;
-	--bg-surface: #0c0c18;
-	--border: #1a1a2e;
-	--border-light: #3a3a5c;
-	--text: #c8c8d0;
-	--text-dim: #6a6a9c;
-	--text-bright: #e0e0e8;
+	--bg: #0c0a0f;
+	--bg-surface: #110f14;
+	--border: #1e1814;
+	--border-light: #3a2e24;
+	--text: #c8c0b0;
+	--text-dim: #7a6e5e;
+	--text-bright: #e8dcc8;
 	--accent: #ffcc33;
 	--accent-hover: #ffdd66;
-	--link: #8888cc;
-	--link-hover: #aaaaee;
+	--link: #c8a050;
+	--link-hover: #e0b860;
+	--font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+	--font-heading: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--font-pixel: 'Press Start 2P', monospace;
 }
 
 body {
-	font-family: 'Press Start 2P', monospace;
+	font-family: var(--font-body);
 	margin: 0;
 	padding: 0;
 	background: var(--bg);
 	color: var(--text);
-	font-size: 11px;
-	line-height: 2.2;
-	image-rendering: pixelated;
+	font-size: 17px;
+	line-height: 1.7;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+	background-size: 256px 256px;
+}
+
+body::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 200px;
+	background: radial-gradient(ellipse at 50% 0%, rgba(255,140,50,0.02), transparent);
+	pointer-events: none;
+	z-index: 9999;
 }
 
 main {
@@ -33,14 +47,15 @@ main {
 }
 
 h1, h2, h3, h4, h5, h6 {
+	font-family: var(--font-heading);
 	margin: 0 0 1rem 0;
 	color: var(--text-bright);
-	line-height: 1.6;
+	line-height: 1.3;
 }
 
-h1 { font-size: 16px; }
-h2 { font-size: 14px; }
-h3 { font-size: 12px; }
+h1 { font-size: 32px; font-weight: 700; }
+h2 { font-size: 24px; font-weight: 600; }
+h3 { font-size: 20px; font-weight: 500; }
 
 a {
 	color: var(--link);
@@ -65,7 +80,8 @@ code {
 	background: var(--bg-surface);
 	border: 1px solid var(--border);
 	border-radius: 2px;
-	font-size: 10px;
+	font-size: 0.85em;
+	color: #d4a06a;
 }
 
 pre {
@@ -81,15 +97,17 @@ pre > code {
 }
 
 blockquote {
-	border-left: 3px solid var(--accent);
+	border-left: 3px solid rgba(255,180,60,0.25);
 	padding: 0 0 0 20px;
 	margin: 0 0 1.5em 0;
 	color: var(--text-dim);
+	background: rgba(255,160,60,0.015);
 }
 
 hr {
 	border: none;
-	border-top: 1px solid var(--border);
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(200,130,50,0.2) 20%, rgba(255,160,60,0.15) 50%, rgba(200,130,50,0.2) 80%, transparent);
 	margin: 2em 0;
 }
 
@@ -101,7 +119,7 @@ img {
 
 @media (max-width: 720px) {
 	body {
-		font-size: 9px;
+		font-size: 16px;
 	}
 	main {
 		padding: 2em 1em;

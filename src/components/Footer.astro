@@ -8,11 +8,21 @@ const today = new Date();
 <style>
 	footer {
 		padding: 2em 1em;
-		background: #0a0a0f;
-		border-top: 1px solid #1a1a2e;
-		color: #3a3a5c;
+		background: #0c0a0f;
+		border-top: none;
+		position: relative;
+		color: #4a3e30;
 		text-align: center;
-		font-family: 'Press Start 2P', monospace;
-		font-size: 8px;
+		font-family: 'DM Sans', sans-serif;
+		font-size: 13px;
+	}
+	footer::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, rgba(200,130,50,0.2) 20%, rgba(255,160,60,0.15) 50%, rgba(200,130,50,0.2) 80%, transparent);
 	}
 </style>

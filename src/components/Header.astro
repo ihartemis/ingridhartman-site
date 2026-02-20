@@ -1,55 +1,74 @@
 ---
-import { SITE_TITLE } from '../consts';
-import HeaderLink from './HeaderLink.astro';
+const pathname = Astro.url.pathname;
+const isOnBlog = pathname.startsWith('/blog');
+const isOnAbout = pathname.startsWith('/about');
 ---
 
 <header>
 	<nav>
-		<a class="site-title" href="/">{SITE_TITLE}</a>
+		<a class="back" href="/" aria-label="Home">&larr;</a>
 		<div class="nav-links">
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
+			<a href="/blog" class:list={[{ active: isOnBlog }]}>Blog</a>
+			<span class="sep">/</span>
+			<a href="/about" class:list={[{ active: isOnAbout }]}>About</a>
 		</div>
 	</nav>
 </header>
 <style>
 	header {
-		padding: 1em 1.5em;
-		background: #0a0a0f;
-		border-bottom: 1px solid #1a1a2e;
+		position: relative;
+		padding: 0;
+	}
+	header::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, rgba(200,130,50,0.15) 30%, rgba(255,160,60,0.1) 50%, rgba(200,130,50,0.15) 70%, transparent);
 	}
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		max-width: 720px;
-		margin: 0 auto;
+		padding: 20px 24px;
 	}
-	.site-title {
-		font-family: 'Press Start 2P', monospace;
-		font-size: 10px;
+	.back {
+		font-family: 'DM Sans', sans-serif;
+		font-size: 13px;
+		font-weight: 500;
 		color: #c8c8d0;
 		text-decoration: none;
+		opacity: 0.25;
+		transition: opacity 0.2s;
 	}
-	.site-title:hover {
-		color: #ffcc33;
+	.back:hover {
+		opacity: 0.9;
 	}
 	.nav-links {
 		display: flex;
-		gap: 1.5em;
+		align-items: center;
+		gap: 6px;
+		font-family: 'DM Sans', sans-serif;
+		font-size: 13px;
+		font-weight: 500;
 	}
-	nav :global(a) {
-		font-family: 'Press Start 2P', monospace;
-		font-size: 9px;
-		color: #6a6a9c;
-		text-decoration: none;
-		padding: 0.5em 0;
-		border-bottom: 2px solid transparent;
-		transition: all 0.15s;
-	}
-	nav :global(a:hover),
-	nav :global(a.active) {
+	.nav-links a {
 		color: #c8c8d0;
-		border-bottom-color: #ffcc33;
+		text-decoration: none;
+		opacity: 0.35;
+		transition: opacity 0.2s;
+	}
+	.nav-links a:hover {
+		opacity: 0.9;
+	}
+	.nav-links a.active {
+		opacity: 0.9;
+	}
+	.sep {
+		color: #c8c8d0;
+		opacity: 0.2;
+		user-select: none;
 	}
 </style>
