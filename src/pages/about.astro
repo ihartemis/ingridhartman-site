@@ -8,34 +8,68 @@ import { SITE_TITLE } from '../consts';
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`About — ${SITE_TITLE}`} description="Builder. Mother. Wanderer." />
+		<BaseHead title={`About — ${SITE_TITLE}`} description="Product manager, first-time mom, compulsive builder." />
 	</head>
 	<body>
 		<Header />
 		<main>
-			<h1>About</h1>
+			<div class="intro">
+				<div class="intro-text">
+					<h1>Hello I'm Ingrid! <span class="wave">👋</span></h1>
+					<p>
+						I am a product manager, first time Mom, aspiring entrepreneur / ex wage slave, and compulsive builder.
+					</p>
+				</div>
+				<figure class="portrait">
+					<img src="/ingrid.jpg" alt="Ingrid Hartman" />
+				</figure>
+			</div>
+
 			<p>
-				I'm Ingrid. I build things — products, companies, communities. I'm a product manager by trade,
-				consultant by choice, and builder by compulsion. Right now I run
-				<a href="https://artemisnova.com">Artemis Nova</a>, a PM consulting practice,
-				and I'm building consumer apps through HighVibe Studio.
+				I run <a href="https://artemisnova.com">Artemis Nova</a>, a product consulting practice, with a focus on health and wellness.
 			</p>
+
 			<p>
-				I'm also a mom. My son Griffin was born in 2024 and rearranged everything —
-				priorities, schedule, what I'm willing to trade my time for. Most of what I build now
-				is in service of freedom: more time, more control, less permission-asking.
+				I'm based in Salt Lake City and run <a href="https://shipslc.com">ShipSLC</a>, a networking group for product people and solo founders. I'm also excited to meet fellow moms and other non-tech people with similar interests. Let's connect! Reach out over <a href="https://x.com/ihartemis">X</a> or <a href="mailto:ingrid@artemisnova.com">email</a>.
 			</p>
-			<p>
-				This site is where I write. No theme, no niche. Product thinking, parenthood,
-				things I'm making, things I'm figuring out. If you want the polished version,
-				check my LinkedIn. This is the real one.
-			</p>
+
+			<section class="more">
+				<h2>More about me</h2>
+
+				<dl class="plans">
+					<dt>1–5 yr plan</dt>
+					<dd>AI product mania, secure the bag</dd>
+					<dt>5–10 yr plan</dt>
+					<dd>Back to the land, start a community w friends</dd>
+				</dl>
+
+				<h3>Interested in</h3>
+				<ul class="interests">
+					<li>Product manager → product builder</li>
+					<li>Creating micro experiences with AI</li>
+					<li>How tech can connect people to each other</li>
+					<li>Holistic health and the human body</li>
+					<li>Health dashboards</li>
+					<li>Early childhood development</li>
+					<li>Evolutionary biology &amp; hunter gatherers</li>
+					<li>Community building</li>
+					<li>Regenerative agriculture, cows and goats</li>
+					<li>The American West</li>
+					<li>Cooking from scratch</li>
+					<li>and more…</li>
+				</ul>
+			</section>
+
 			<div class="links">
-				<a href="https://x.com/ihartemis" target="_blank">X</a>
+				<a href="https://x.com/ihartemis" target="_blank" rel="noopener noreferrer">X</a>
 				<span class="sep">/</span>
-				<a href="https://artemisnova.com" target="_blank">Artemis Nova</a>
+				<a href="mailto:ingrid@artemisnova.com">Email</a>
 				<span class="sep">/</span>
-				<a href="/blog">Blog</a>
+				<a href="https://artemisnova.com" target="_blank" rel="noopener noreferrer">Artemis Nova</a>
+				<span class="sep">/</span>
+				<a href="https://ournanny.app" target="_blank" rel="noopener noreferrer">OurNanny</a>
+				<span class="sep">/</span>
+				<a href="https://shipslc.com" target="_blank" rel="noopener noreferrer">ShipSLC</a>
 			</div>
 		</main>
 		<Footer />
@@ -46,30 +80,177 @@ import { SITE_TITLE } from '../consts';
 	main {
 		max-width: 65ch;
 	}
-	h1 {
-		margin-bottom: 1.5em;
-		color: var(--text-bright);
+
+	.intro {
+		display: flex;
+		gap: 2em;
+		align-items: flex-start;
+		margin-bottom: 1em;
 	}
+
+	.intro-text {
+		flex: 1;
+		min-width: 0;
+	}
+
+	h1 {
+		margin-bottom: 0.6em;
+		color: var(--text-bright);
+		line-height: 1.15;
+	}
+
+	.wave {
+		display: inline-block;
+		transform-origin: 70% 70%;
+		animation: wave 2.4s ease-in-out infinite;
+	}
+	@keyframes wave {
+		0%, 60%, 100% { transform: rotate(0deg); }
+		10% { transform: rotate(14deg); }
+		20% { transform: rotate(-8deg); }
+		30% { transform: rotate(14deg); }
+		40% { transform: rotate(-4deg); }
+		50% { transform: rotate(10deg); }
+	}
+
+	.portrait {
+		margin: 0;
+		flex-shrink: 0;
+		width: 180px;
+		height: 180px;
+		border-radius: 50%;
+		overflow: hidden;
+		border: 1px solid rgba(180, 120, 50, 0.25);
+		box-shadow: 0 0 24px rgba(255, 160, 60, 0.08);
+	}
+	.portrait img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
 	p {
-		font-size: 18px;
-		line-height: 1.8;
+		font-size: 17px;
+		line-height: 1.75;
+		color: var(--text);
+		margin-bottom: 1.2em;
+	}
+
+	p a {
+		color: var(--link);
+		text-decoration: underline;
+		text-decoration-color: rgba(224, 184, 96, 0.35);
+		text-underline-offset: 3px;
+	}
+	p a:hover {
+		color: var(--link-hover);
+	}
+
+	.more {
+		margin-top: 2.5em;
+	}
+	.more h2 {
+		font-family: var(--font-heading);
+		font-size: 14px;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--text-dim);
+		opacity: 0.85;
+		margin-bottom: 1em;
+		font-weight: 600;
+	}
+	.more h3 {
+		font-family: var(--font-heading);
+		font-size: 14px;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--text-dim);
+		opacity: 0.85;
+		margin-top: 1.6em;
+		margin-bottom: 0.6em;
+		font-weight: 600;
+	}
+
+	.plans {
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		gap: 0.4em 1.2em;
+		margin: 0 0 0 0;
+		font-size: 16px;
+		line-height: 1.6;
+	}
+	.plans dt {
+		font-family: var(--font-heading);
+		font-weight: 600;
+		color: var(--text-bright);
+		white-space: nowrap;
+	}
+	.plans dd {
+		margin: 0;
 		color: var(--text);
 	}
+
+	.interests {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		font-size: 16px;
+		line-height: 1.7;
+		columns: 2;
+		column-gap: 2em;
+	}
+	.interests li {
+		break-inside: avoid;
+		padding-left: 1em;
+		position: relative;
+	}
+	.interests li::before {
+		content: '·';
+		position: absolute;
+		left: 0;
+		color: var(--accent);
+		opacity: 0.7;
+	}
+
 	.links {
-		margin-top: 2em;
+		margin-top: 3em;
 		padding-top: 2em;
 		border-top: 1px solid rgba(180,120,50,0.12);
 		font-family: var(--font-heading);
 		font-size: 14px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.25em 0.5em;
 	}
 	.links a {
 		color: var(--accent);
+		text-decoration: none;
+		transition: color 0.15s;
 	}
 	.links a:hover {
-		color: var(--accent-hover);
+		color: var(--accent-hover, #ffe88a);
+		text-decoration: underline;
+		text-decoration-color: rgba(255, 220, 120, 0.4);
+		text-underline-offset: 3px;
 	}
 	.sep {
 		color: #4a3e30;
-		margin: 0 0.5em;
+	}
+
+	@media (max-width: 600px) {
+		.intro {
+			flex-direction: column-reverse;
+			gap: 1.25em;
+			align-items: flex-start;
+		}
+		.portrait {
+			width: 140px;
+			height: 140px;
+		}
+		.interests {
+			columns: 1;
+		}
 	}
 </style>
