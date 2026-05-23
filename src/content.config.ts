@@ -15,9 +15,13 @@ const ships = defineCollection({
 			project: z.string(),
 			// Tools used to make it (free-form, lowercase-kebab-case).
 			tools: z.array(z.string()).optional(),
-			// Optional image alongside the .md file. Renders on detail page + powers future Collection page.
+			// Hero image for the future Collection page. Not rendered on the detail page.
 			// `.nullable()` allows YAML `thumbnail:` (empty value) — same intent as omitting the field.
 			thumbnail: image().nullable().optional(),
+			// Before/after pair for visual progression. Render side-by-side at the top of the detail page.
+			// Either, both, or neither can be set.
+			before: image().nullable().optional(),
+			after: image().nullable().optional(),
 			// Optional — only when the artifact lives elsewhere (live URL, repo, app store, Loom).
 			link: z.string().optional(),
 		}),

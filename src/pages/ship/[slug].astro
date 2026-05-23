@@ -46,10 +46,21 @@ const linkIsExternal = !!link && link.startsWith('http');
 				<FormattedDate date={ship.data.date} />
 			</header>
 
-			{ship.data.thumbnail && (
-				<figure class="thumbnail">
-					<Image src={ship.data.thumbnail} alt={ship.data.title} />
-				</figure>
+			{(ship.data.before || ship.data.after) && (
+				<div class:list={['progression', { 'progression-pair': ship.data.before && ship.data.after }]}>
+					{ship.data.before && (
+						<figure class="prog-cell">
+							<Image src={ship.data.before} alt={`Before — ${ship.data.title}`} />
+							<figcaption>Before</figcaption>
+						</figure>
+					)}
+					{ship.data.after && (
+						<figure class="prog-cell">
+							<Image src={ship.data.after} alt={`After — ${ship.data.title}`} />
+							<figcaption>After</figcaption>
+						</figure>
+					)}
+				</div>
 			)}
 
 			<article class="ship-body">
@@ -125,16 +136,43 @@ const linkIsExternal = !!link && link.startsWith('http');
 		letter-spacing: 0.03em;
 	}
 
-	.thumbnail {
-		margin: 0 0 2em 0;
-		padding: 0;
+	.progression {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1em;
+		margin: 1.5em 0 2.25em 0;
 	}
-	.thumbnail :global(img) {
+	.progression.progression-pair {
+		grid-template-columns: 1fr 1fr;
+	}
+	.prog-cell {
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+	}
+	.prog-cell :global(img) {
 		display: block;
 		width: 100%;
 		height: auto;
 		border-radius: 4px;
-		border: 1px solid rgba(180, 120, 50, 0.15);
+		border: 1px solid rgba(180, 120, 50, 0.18);
+		background: rgba(0, 0, 0, 0.2);
+	}
+	.prog-cell figcaption {
+		font-family: var(--font-heading);
+		font-size: 10px;
+		text-transform: uppercase;
+		letter-spacing: 0.12em;
+		color: var(--text-dim);
+		opacity: 0.7;
+	}
+
+	@media (max-width: 600px) {
+		.progression.progression-pair {
+			grid-template-columns: 1fr;
+		}
 	}
 
 	.ship-body {
