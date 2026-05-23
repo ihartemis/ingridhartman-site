@@ -70,6 +70,7 @@ const streakWeeks = computeStreak(ships);
 				transition: opacity 0.2s;
 			}
 			.home-nav a:hover { opacity: 0.9; }
+			.home-nav a.active { opacity: 0.9; }
 			.home-nav .sep {
 				color: #c8c8d0;
 				opacity: 0.2;
@@ -182,6 +183,8 @@ const streakWeeks = computeStreak(ships);
 	</head>
 	<body>
 		<nav class="home-nav">
+			<a href="/" class="active">Home</a>
+			<span class="sep">/</span>
 			<a href="/ship">Ship</a>
 			<span class="sep">/</span>
 			<a href="/about">About</a>
