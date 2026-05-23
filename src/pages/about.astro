@@ -13,25 +13,23 @@ import { SITE_TITLE } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<div class="intro">
-				<div class="intro-text">
+			<div class="hero">
+				<div class="hero-text">
 					<h1>Hello I'm Ingrid! <span class="wave">👋</span></h1>
 					<p>
 						I am a product manager, first time Mom, aspiring entrepreneur / ex wage slave, and compulsive builder.
 					</p>
+					<p>
+						I run <a href="https://artemisnova.com">Artemis Nova</a>, a product consulting practice, with a focus on health and wellness.
+					</p>
+					<p>
+						I'm based in Salt Lake City and run <a href="https://shipslc.com">ShipSLC</a>, a networking group for product people and solo founders. I'm also excited to meet fellow moms and other non-tech people with similar interests. Let's connect! Reach out over <a href="https://x.com/ihartemis">X</a> or <a href="mailto:ingrid@artemisnova.com">email</a>.
+					</p>
 				</div>
 				<figure class="portrait">
-					<img src="/ingrid.jpg" alt="Ingrid Hartman" />
+					<img src="/ingrid.png" alt="Ingrid Hartman with her son Griffin" />
 				</figure>
 			</div>
-
-			<p>
-				I run <a href="https://artemisnova.com">Artemis Nova</a>, a product consulting practice, with a focus on health and wellness.
-			</p>
-
-			<p>
-				I'm based in Salt Lake City and run <a href="https://shipslc.com">ShipSLC</a>, a networking group for product people and solo founders. I'm also excited to meet fellow moms and other non-tech people with similar interests. Let's connect! Reach out over <a href="https://x.com/ihartemis">X</a> or <a href="mailto:ingrid@artemisnova.com">email</a>.
-			</p>
 
 			<section class="more">
 				<h2>More about me</h2>
@@ -78,23 +76,24 @@ import { SITE_TITLE } from '../consts';
 
 <style>
 	main {
-		max-width: 65ch;
+		width: 960px;
+		max-width: calc(100% - 2em);
 	}
 
-	.intro {
+	.hero {
 		display: flex;
-		gap: 2em;
+		gap: 3em;
 		align-items: flex-start;
-		margin-bottom: 1em;
+		margin-bottom: 2em;
 	}
 
-	.intro-text {
+	.hero-text {
 		flex: 1;
 		min-width: 0;
 	}
 
 	h1 {
-		margin-bottom: 0.6em;
+		margin-bottom: 0.8em;
 		color: var(--text-bright);
 		line-height: 1.15;
 	}
@@ -115,20 +114,13 @@ import { SITE_TITLE } from '../consts';
 
 	.portrait {
 		margin: 0;
-		flex-shrink: 0;
-		width: 180px;
-		height: 180px;
-		border-radius: 50%;
-		overflow: hidden;
-		border: 1px solid rgba(180, 120, 50, 0.25);
-		box-shadow: 0 0 24px rgba(255, 160, 60, 0.08);
+		flex: 0 0 280px;
+		filter: drop-shadow(0 0 28px rgba(255, 160, 60, 0.08));
 	}
 	.portrait img {
 		display: block;
 		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: 50% 22%;
+		height: auto;
 	}
 
 	p {
@@ -240,15 +232,15 @@ import { SITE_TITLE } from '../consts';
 		color: #4a3e30;
 	}
 
-	@media (max-width: 600px) {
-		.intro {
+	@media (max-width: 760px) {
+		.hero {
 			flex-direction: column-reverse;
-			gap: 1.25em;
-			align-items: flex-start;
+			gap: 1.5em;
+			align-items: center;
 		}
 		.portrait {
-			width: 140px;
-			height: 140px;
+			flex: 0 0 auto;
+			width: 200px;
 		}
 		.interests {
 			columns: 1;
