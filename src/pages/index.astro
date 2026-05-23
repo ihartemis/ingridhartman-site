@@ -1,20 +1,17 @@
 ---
 import { getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { computeStreak, getLastShipMedium } from '../lib/ship-utils';
 
-const posts = await getCollection('blog');
 const ships = await getCollection('ships');
-
-const latestBlogDate = posts
-	.map((p) => p.data.pubDate)
-	.sort((a, b) => b.valueOf() - a.valueOf())[0] ?? null;
 
 const latestShipDate = ships
 	.map((s) => s.data.date)
 	.sort((a, b) => b.valueOf() - a.valueOf())[0] ?? null;
 
-const lastBlogISO = latestBlogDate ? latestBlogDate.toISOString().split('T')[0] : null;
 const lastShipISO = latestShipDate ? latestShipDate.toISOString().split('T')[0] : null;
+const lastShipMedium = getLastShipMedium(ships);
+const streakWeeks = computeStreak(ships);
 ---
 
 <!doctype html>
@@ -202,7 +199,7 @@ const lastShipISO = latestShipDate ? latestShipDate.toISOString().split('T')[0] 
 			</div>
 		</div>
 
-		<script define:vars={{ lastBlogISO, lastShipISO }}>
+		<script define:vars={{ lastShipISO, lastShipMedium, streakWeeks }}>
 		// ============================================================
 		// CANVAS PIXEL ART SCENE RENDERER
 		// ============================================================
@@ -1066,30 +1063,38 @@ const lastShipISO = latestShipDate ? latestShipDate.toISOString().split('T')[0] 
 				return Math.floor((now.getTime() - then.getTime()) / (1000 * 60 * 60 * 24));
 			}
 
-			const blogDays = daysSince(lastBlogISO);
 			const shipDays = daysSince(lastShipISO);
-			const blogRecent = blogDays <= 14;
 			const shipRecent = shipDays <= 30;
 
-			// 4-state yes-node text + choices
+			// Medium-aware "yes" node text
 			let yesText;
-			const yesChoices = [];
-
-			if (blogRecent && shipRecent) {
-				yesText = "She's been busy — writing by the fire, and out in the workshop too.";
-				yesChoices.push({ text: "Show me her writings.", next: 'adventures' });
-				yesChoices.push({ text: "Show me what she's built.", next: 'workshop' });
-			} else if (blogRecent && !shipRecent) {
-				yesText = "She was just here not long ago. Left some new writings by the fire.";
-				yesChoices.push({ text: "Tell me about her adventures.", next: 'adventures' });
-			} else if (!blogRecent && shipRecent) {
-				yesText = "She's been busy lately — out in the workshop. There's new things to see.";
-				yesChoices.push({ text: "Show me what she's built.", next: 'workshop' });
+			if (!shipRecent) {
+				yesText = "We haven't seen her around in a while. But there's plenty she's left behind.";
 			} else {
-				yesText = "We haven't seen her around here in a while. But there's plenty she's left behind.";
-				yesChoices.push({ text: "Tell me about her adventures.", next: 'adventures' });
-				yesChoices.push({ text: "Show me what she's built.", next: 'workshop' });
+				switch (lastShipMedium) {
+					case 'writing':
+						yesText = "She was here not long ago. Left some new words by the fire.";
+						break;
+					case 'web':
+						yesText = "She's been busy in the workshop — hammering on something.";
+						break;
+					case 'app':
+						yesText = "She's been at the workshop — working on some kind of handheld device. Glows in the dark, she says.";
+						break;
+					case 'media':
+						yesText = "Strange sounds drifting from the workshop lately.";
+						break;
+					default:
+						yesText = "She's been busy — out making something.";
+				}
+				if (streakWeeks >= 3) {
+					yesText += " Been at it every week for a stretch now.";
+				}
 			}
+
+			const yesChoices = [
+				{ text: shipRecent ? "Show me what she's been making." : "Show me what she's made.", next: 'workshop' }
+			];
 
 			const tree = {
 				start: {
@@ -1103,14 +1108,8 @@ const lastShipISO = latestShipDate ? latestShipDate.toISOString().split('T')[0] 
 					text: yesText,
 					choices: yesChoices
 				},
-				adventures: {
-					text: "Her chronicles are kept in the archives. All sorts of things in there — building, thinking, wandering.",
-					choices: [
-						{ text: "Take me there.", next: '/blog' }
-					]
-				},
 				workshop: {
-					text: "Her workshop's full of things — websites, posts, tools, scraps. Some big, some small.",
+					text: "Her workshop's full of things she's made — sites, words, tools, whatever she's been into. Some big, some small.",
 					choices: [
 						{ text: "Take me there.", next: '/ship' }
 					]
@@ -1129,59 +1128,90 @@ const lastShipISO = latestShipDate ? latestShipDate.toISOString().split('T')[0] 
 					text: "Back again? She still hasn't returned.",
 					choices: [
 						{ text: "Any idea when she'll be back?", next: 'yes' },
-						{ text: "I'll read what she left behind.", next: 'adventures' }
+						{ text: "I'll see what she's left behind.", next: 'workshop' }
 					]
 				},
 				{
 					text: "Ah, you again. Make yourself comfortable.",
 					choices: [
 						{ text: "Don't mind if I do.", next: 'yes' },
-						{ text: "What's new around here?", next: 'adventures' }
+						{ text: "What's new around here?", next: 'workshop' }
 					]
 				},
 				{
 					text: "The fire's still burning. Help yourself to some warmth.",
 					choices: [
 						{ text: "Thanks, old man.", next: 'yes' },
-						{ text: "Got any new stories?", next: 'adventures' }
+						{ text: "Got anything new to show?", next: 'workshop' }
 					]
 				},
 				{
 					text: "You keep coming back. I like that about you.",
 					choices: [
 						{ text: "Hard to stay away.", next: 'yes' },
-						{ text: "Show me something new.", next: 'adventures' }
+						{ text: "Show me something new.", next: 'workshop' }
 					]
 				},
 				{
 					text: "Same fire, same stories. Unless you've brought new ones.",
 					choices: [
-						{ text: "Let me check the archives.", next: 'adventures' },
+						{ text: "Let me see the workshop.", next: 'workshop' },
 						{ text: "Tell me about Ingrid again.", next: 'who' }
 					]
 				}
 			];
 
-			// Ship-aware quips — only added when something's been shipped recently
-			const shipQuips = [
-				{
-					text: "She's been at the workshop. New things to see if you want a look.",
-					choices: [
-						{ text: "Show me.", next: 'workshop' },
-						{ text: "What about her writings?", next: 'adventures' }
-					]
-				},
-				{
-					text: "Sounds of building from the workshop again.",
-					choices: [
-						{ text: "I'll take a look.", next: 'workshop' },
-						{ text: "Tell me about her instead.", next: 'who' }
-					]
-				}
-			];
+			// Ship-aware quips — medium-tuned, only added when something's been shipped recently
+			const shipQuipsByMedium = {
+				writing: [
+					{
+						text: "Smoke from her writing fire again. Worth a look.",
+						choices: [
+							{ text: "Show me what she wrote.", next: 'workshop' },
+							{ text: "Tell me about her.", next: 'who' }
+						]
+					}
+				],
+				web: [
+					{
+						text: "More hammering from the workshop. Worth a look.",
+						choices: [
+							{ text: "I'll take a look.", next: 'workshop' },
+							{ text: "Tell me about her instead.", next: 'who' }
+						]
+					}
+				],
+				app: [
+					{
+						text: "She's at the workbench again. Tiny glowing rectangles, far as I can tell.",
+						choices: [
+							{ text: "Show me anyway.", next: 'workshop' },
+							{ text: "Tell me about her.", next: 'who' }
+						]
+					}
+				],
+				media: [
+					{
+						text: "Strange songs from the workshop. Worth a listen.",
+						choices: [
+							{ text: "I'll have a listen.", next: 'workshop' },
+							{ text: "Tell me about her.", next: 'who' }
+						]
+					}
+				],
+				other: [
+					{
+						text: "She's been at the workshop. New things to see if you want a look.",
+						choices: [
+							{ text: "Show me.", next: 'workshop' },
+							{ text: "Tell me about her.", next: 'who' }
+						]
+					}
+				]
+			};
 
 			const welcomeBackQuips = shipRecent
-				? baseQuips.concat(shipQuips)
+				? baseQuips.concat(shipQuipsByMedium[lastShipMedium] || shipQuipsByMedium.other)
 				: baseQuips;
 
 			const textEl = document.getElementById('dialogue-text');

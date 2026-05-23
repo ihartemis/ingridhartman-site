@@ -137,6 +137,12 @@ export function weeksLeftInYear(year: number, asOf: Date = new Date()): number {
 	return Math.max(0, total - current.week);
 }
 
+export function getLastShipMedium(ships: Ship[]): string | null {
+	if (ships.length === 0) return null;
+	const sorted = [...ships].sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+	return sorted[0]!.data.medium ?? null;
+}
+
 export function computeStreak(ships: Ship[], asOf: Date = new Date()): number {
 	const weeksWithShips = new Set<string>();
 	for (const s of ships) {

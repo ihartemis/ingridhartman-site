@@ -1,8 +1,13 @@
 ---
-title: "Built the ship log"
+title: Shipped the ship log
 date: 2026-05-22
 effort: 2
-property: ingridhartman
+medium: web
+project: ingridhartman
+tools:
+  - claude-code
+thumbnail:
+link: https://ingridhartman.com/ship
 ---
 
 At the beginning of the year, I had a goal to ship something every week. Life got busy and while I started with great intentions, I haven't shipped anything for months because my focus has been on my hourly contracting roles and making $. My solve — a public log of things I make.

@@ -16,14 +16,18 @@ const yearForCells = 2026;
 const cells = buildWeekCells(allShips, yearForCells, now);
 const rawGroups = groupShipsByWeek(allShips);
 
-// Pre-render markdown bodies so we can use <Content /> instead of set:html
+// Pre-render markdown bodies. Also compute whether each ship has content
+// beyond its first paragraph, so we know whether to show a "Read more →" link.
 const groups = await Promise.all(
 	rawGroups.map(async (group) => ({
 		...group,
 		ships: await Promise.all(
 			group.ships.map(async (ship) => {
 				const { Content } = await render(ship);
-				return { ...ship, Content };
+				const body = ship.body ?? '';
+				const blocks = body.split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
+				const hasMore = blocks.length > 1;
+				return { ...ship, Content, hasMore };
 			})
 		),
 	}))
@@ -78,7 +82,9 @@ const subtitle = yearCount === 0
 									<li class={`ship effort-${ship.data.effort}`}>
 										<div class="ship-body">
 											<div class="ship-title-row">
-												<h3 class="ship-title">{ship.data.title}</h3>
+												<h3 class="ship-title">
+													<a href={`/ship/${ship.id}`}>{ship.data.title}</a>
+												</h3>
 												<FormattedDate date={ship.data.date} />
 											</div>
 											{ship.body && ship.body.trim() && (
@@ -86,14 +92,11 @@ const subtitle = yearCount === 0
 													<ship.Content />
 												</div>
 											)}
-											<div class="ship-meta">
-												<span class={`ship-property prop-${ship.data.property}`}>{ship.data.property}</span>
-												{ship.data.link && (
-													<a href={ship.data.link} class="ship-link" target={ship.data.link.startsWith('http') ? '_blank' : '_self'} rel={ship.data.link.startsWith('http') ? 'noopener noreferrer' : undefined}>
-														→ {ship.data.link.startsWith('/blog') ? 'Read the post' : ship.data.link.startsWith('http') ? 'See it' : 'Read more'}
-													</a>
-												)}
-											</div>
+											{ship.hasMore && (
+												<a class="read-more" href={`/ship/${ship.id}`}>
+													Read more →
+												</a>
+											)}
 										</div>
 									</li>
 								))}
@@ -245,10 +248,19 @@ const subtitle = yearCount === 0
 		font-size: 17px;
 		font-weight: 600;
 		margin: 0;
-		color: var(--text-bright);
 		line-height: 1.3;
 		min-width: 0;
 		overflow-wrap: anywhere;
+	}
+
+	.ship-title a {
+		color: var(--text-bright);
+		text-decoration: none;
+		transition: color 0.15s;
+	}
+
+	.ship-title a:hover {
+		color: var(--accent);
 	}
 
 	.ship-title-row :global(time) {
@@ -261,75 +273,38 @@ const subtitle = yearCount === 0
 	}
 
 	.ship-desc {
-		overflow-wrap: anywhere;
-	}
-
-	.ship-desc {
 		color: var(--text);
 		font-size: 15px;
 		line-height: 1.6;
 		margin-top: 0.4em;
+		overflow-wrap: anywhere;
 	}
 
-	.ship-desc :global(p) {
-		margin: 0 0 0.6em 0;
+	/* Feed preview: render only the first block of the body. Rest waits behind /ship/[slug]. */
+	.ship-desc :global(> *) {
+		display: none;
+	}
+	.ship-desc :global(> *:first-child) {
+		display: block;
+		margin: 0;
 	}
 
-	.ship-desc :global(p:last-child) {
-		margin-bottom: 0;
-	}
-
-	.ship-meta {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 1em;
-		margin-top: 0.6em;
-	}
-
-	.ship-link {
+	.read-more {
+		display: inline-block;
 		color: var(--link);
 		font-family: var(--font-heading);
 		font-size: 13px;
 		text-decoration: none;
+		margin-top: 0.6em;
 		transition: color 0.15s;
 	}
 
-	.ship-link:hover {
+	.read-more:hover {
 		color: var(--link-hover);
 		text-decoration: underline;
 		text-decoration-color: rgba(224, 184, 96, 0.4);
 		text-underline-offset: 3px;
 	}
-
-	.ship-property {
-		font-family: var(--font-heading);
-		font-size: 9px;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-		color: var(--text-dim);
-		padding: 1px 5px 1px 0;
-		white-space: nowrap;
-		opacity: 0.75;
-	}
-	.ship-property::before {
-		content: '';
-		display: inline-block;
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		margin-right: 6px;
-		background: var(--text-dim);
-		vertical-align: 1px;
-	}
-	/* Per-property accent — just a tiny color dot */
-	.ship-property.prop-ingridhartman::before { background: #c8a050; }
-	.ship-property.prop-artemisnova::before   { background: #7faab4; }
-	.ship-property.prop-ournanny::before      { background: #b08fc4; }
-	.ship-property.prop-highvibe::before      { background: #9cc070; }
-	.ship-property.prop-shipslc::before       { background: #c8a878; }
-	.ship-property.prop-tinyhealth::before    { background: #80c0a0; }
-	.ship-property.prop-whoop::before         { background: #c08080; }
 
 	@media (max-width: 600px) {
 		.ship-title-row {
