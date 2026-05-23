@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
@@ -14,7 +14,20 @@ const now = new Date();
 const yearForCells = 2026;
 
 const cells = buildWeekCells(allShips, yearForCells, now);
-const groups = groupShipsByWeek(allShips);
+const rawGroups = groupShipsByWeek(allShips);
+
+// Pre-render markdown bodies so we can use <Content /> instead of set:html
+const groups = await Promise.all(
+	rawGroups.map(async (group) => ({
+		...group,
+		ships: await Promise.all(
+			group.ships.map(async (ship) => {
+				const { Content } = await render(ship);
+				return { ...ship, Content };
+			})
+		),
+	}))
+);
 
 const yearCount = countShipsInYear(allShips, yearForCells, now);
 const weeksLeft = weeksLeftInYear(yearForCells, now);
@@ -69,7 +82,9 @@ const subtitle = yearCount === 0
 												<FormattedDate date={ship.data.date} />
 											</div>
 											{ship.body && ship.body.trim() && (
-												<div class="ship-desc" set:html={ship.body.trim()} />
+												<div class="ship-desc">
+													<ship.Content />
+												</div>
 											)}
 											<div class="ship-meta">
 												<span class={`ship-property prop-${ship.data.property}`}>{ship.data.property}</span>
