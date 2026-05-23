@@ -12,6 +12,8 @@ link: https://ingridhartman.com/ship
 
 At the beginning of the year, I had a goal to ship something every week. Life got busy and while I started with great intentions, I haven't shipped anything for months because my focus has been on my hourly contracting roles and making $. My solve — a public log of things I make.
 
+##  Problem I am solving
+
 It is an effort to give myself a kick in the pants and some accountability. I hope to look back on it at the end of the year with a wistful sense of pride. With each thing I create, I learn something, use new tools, get a little sharper.
 
 ## What I learned from this build
