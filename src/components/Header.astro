@@ -1,6 +1,7 @@
 ---
 const pathname = Astro.url.pathname;
 const isOnBlog = pathname.startsWith('/blog');
+const isOnShip = pathname.startsWith('/ship');
 const isOnAbout = pathname.startsWith('/about');
 ---
 
@@ -9,6 +10,8 @@ const isOnAbout = pathname.startsWith('/about');
 		<a class="back" href="/" aria-label="Home">&larr;</a>
 		<div class="nav-links">
 			<a href="/blog" class:list={[{ active: isOnBlog }]}>Blog</a>
+			<span class="sep">/</span>
+			<a href="/ship" class:list={[{ active: isOnShip }]}>Ship</a>
 			<span class="sep">/</span>
 			<a href="/about" class:list={[{ active: isOnAbout }]}>About</a>
 		</div>

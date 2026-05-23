@@ -1,0 +1,327 @@
+---
+import type { WeekCell } from '../lib/ship-utils';
+
+interface Props {
+	cells: WeekCell[];
+	year: number;
+}
+
+const { cells, year } = Astro.props;
+
+// Split into 4 rows of 13 weeks each
+const COLS = 13;
+const rows: WeekCell[][] = [];
+for (let r = 0; r < 4; r++) {
+	const slice = cells.slice(r * COLS, (r + 1) * COLS);
+	if (slice.length > 0) rows.push(slice);
+}
+
+// Sprite layout: 5w × 7h pixel grid, 4 brightness tiers (A=dim → D=core)
+// Layout:
+//   . . A . .
+//   . A B A .
+//   A B C B A
+//   B C D C B
+//   B C D C B
+//   . B C B .
+//   . . B . .
+const SPRITE_TIERS: Array<'' | 'tA' | 'tB' | 'tC' | 'tD'> = [
+	'',   '',   'tA', '',   '',
+	'',   'tA', 'tB', 'tA', '',
+	'tA', 'tB', 'tC', 'tB', 'tA',
+	'tB', 'tC', 'tD', 'tC', 'tB',
+	'tB', 'tC', 'tD', 'tC', 'tB',
+	'',   'tB', 'tC', 'tB', '',
+	'',   '',   'tB', '',   '',
+];
+---
+
+<div class="embers-wrap">
+	<div class="embers-year">{year}</div>
+
+	<div class="embers-grid" role="list" aria-label={`Ship log embers for ${year}`}>
+		{rows.map((row) => (
+			<div class="ember-row">
+				{row.map((cell) => (
+					<button
+						type="button"
+						class:list={[
+							'ember',
+							`effort-${cell.maxEffort}`,
+							{ 'is-current': cell.isCurrent, 'is-future': cell.isFuture },
+						]}
+						data-week={cell.week}
+						aria-label={`Week ${cell.week}, ${cell.dateRange}${cell.shipCount ? `: ${cell.shipCount} ship${cell.shipCount > 1 ? 's' : ''}` : ': no ships'}`}
+						title={`Week ${cell.week} · ${cell.dateRange}${cell.shipCount ? ` · ${cell.shipCount} ship${cell.shipCount > 1 ? 's' : ''}` : ''}`}
+						disabled={cell.shipCount === 0}
+					>
+						<span class="ember-sprite">
+							{SPRITE_TIERS.map((t) => <span class:list={['px', t]}></span>)}
+						</span>
+						<span class="visually-hidden">Week {cell.week}</span>
+					</button>
+				))}
+			</div>
+		))}
+	</div>
+</div>
+
+<script>
+	const buttons = document.querySelectorAll<HTMLButtonElement>('.ember:not(.legend-ember)');
+	buttons.forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const week = btn.dataset.week;
+			if (!week) return;
+			const target = document.getElementById(`week-${week}`);
+			if (!target) return;
+			target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			target.classList.add('week-flash');
+			setTimeout(() => target.classList.remove('week-flash'), 1200);
+		});
+	});
+</script>
+
+<style>
+	.embers-wrap {
+		margin: 1.5em 0 1.75em;
+	}
+
+	.embers-year {
+		font-family: var(--font-heading);
+		font-size: 12px;
+		color: var(--text-dim);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		margin-bottom: 0.6em;
+	}
+
+	.embers-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding: 12px 10px;
+		background: rgba(8, 6, 12, 0.55);
+		border: 1px solid rgba(180, 120, 50, 0.1);
+		border-radius: 3px;
+		position: relative;
+		max-width: 560px;
+	}
+
+	.embers-grid::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background:
+			radial-gradient(ellipse at 50% 100%, rgba(255, 140, 50, 0.06), transparent 70%),
+			radial-gradient(ellipse at 20% 50%, rgba(255, 100, 30, 0.03), transparent 60%),
+			radial-gradient(ellipse at 80% 50%, rgba(255, 100, 30, 0.03), transparent 60%);
+		pointer-events: none;
+		border-radius: 3px;
+	}
+
+	.ember-row {
+		display: grid;
+		grid-template-columns: repeat(13, minmax(0, 1fr));
+		gap: 6px;
+		position: relative;
+	}
+
+	.ember {
+		all: unset;
+		display: block;
+		aspect-ratio: 5 / 7;
+		min-height: 28px;
+		position: relative;
+		cursor: pointer;
+		transition: transform 0.12s;
+	}
+
+	.ember[disabled] {
+		cursor: default;
+	}
+
+	.ember:not([disabled]):hover {
+		transform: translateY(-2px) scale(1.08);
+		z-index: 2;
+	}
+
+	.ember:focus-visible {
+		outline: 1px solid var(--accent);
+		outline-offset: 2px;
+	}
+
+	.ember-sprite {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-template-rows: repeat(7, 1fr);
+		image-rendering: pixelated;
+	}
+
+	.px {
+		display: block;
+		width: 100%;
+		height: 100%;
+		background: transparent;
+	}
+
+	/* ============================================================
+	   PALETTE — same colors as homepage fire sprite, for continuity
+	   #ffee77 white-yellow / #ffdd55 bright yellow / #ffcc33 yellow
+	   #ffaa00 orange-yellow / #ff8800 orange / #ff6600 dark orange
+	   #ee4422 red-orange / #cc2200 red / #aa1100 dark red / #881100 darkest
+	   ============================================================ */
+
+	/* ---- PAST EMPTY — dead coal, same silhouette but cold ---- */
+	.effort-0:not(.is-future) .tA { background: #1a1812; }
+	.effort-0:not(.is-future) .tB { background: #221e16; }
+	.effort-0:not(.is-future) .tC { background: #2a241a; }
+	.effort-0:not(.is-future) .tD { background: #3a2c1c; }
+
+	/* ---- FUTURE EMPTY — only the core, very faint ---- */
+	.effort-0.is-future .tD { background: rgba(150, 140, 120, 0.13); }
+	.effort-0.is-future .tC { background: rgba(150, 140, 120, 0.06); }
+
+	/* ---- EFFORT 1 — small, embers-in-coals ---- */
+	.effort-1 .tA { background: #881100; }
+	.effort-1 .tB { background: #aa1100; }
+	.effort-1 .tC { background: #cc2200; }
+	.effort-1 .tD { background: #ee4422; }
+
+	/* ---- EFFORT 2 — medium, warm orange flame ---- */
+	.effort-2 .tA { background: #aa1100; }
+	.effort-2 .tB { background: #ee4422; }
+	.effort-2 .tC { background: #ff8800; }
+	.effort-2 .tD { background: #ffaa00; }
+
+	/* ---- EFFORT 3 — major, full blaze ---- */
+	.effort-3 .tA { background: #ee4422; }
+	.effort-3 .tB { background: #ff8800; }
+	.effort-3 .tC { background: #ffcc33; }
+	.effort-3 .tD { background: #ffee77; }
+
+	/* ============================================================
+	   ANIMATIONS — breath effect on core and hot pixels
+	   3-frame cycles for D, 2-frame for C, halo on whole sprite
+	   ============================================================ */
+
+	/* Effort 3 — slow blaze, gentle breath */
+	@keyframes blaze-D {
+		0%, 100% { background: #ffdd55; }
+		50% { background: #ffee77; }
+	}
+	@keyframes blaze-C {
+		0%, 100% { background: #ffcc33; }
+		50% { background: #ffd650; }
+	}
+	@keyframes blaze-halo {
+		0%, 100% {
+			filter:
+				drop-shadow(0 0 4px rgba(255, 200, 80, 0.55))
+				drop-shadow(0 0 12px rgba(255, 160, 40, 0.35))
+				drop-shadow(0 0 22px rgba(255, 120, 20, 0.18));
+		}
+		50% {
+			filter:
+				drop-shadow(0 0 6px rgba(255, 215, 95, 0.65))
+				drop-shadow(0 0 16px rgba(255, 175, 55, 0.42))
+				drop-shadow(0 0 28px rgba(255, 130, 25, 0.22));
+		}
+	}
+
+	/* Effort 2 — slow warm breath */
+	@keyframes ember-D {
+		0%, 100% { background: #ffaa00; }
+		50% { background: #ffbe22; }
+	}
+	@keyframes ember-halo {
+		0%, 100% {
+			filter:
+				drop-shadow(0 0 3px rgba(255, 150, 50, 0.35))
+				drop-shadow(0 0 9px rgba(255, 120, 30, 0.22));
+		}
+		50% {
+			filter:
+				drop-shadow(0 0 4px rgba(255, 170, 65, 0.45))
+				drop-shadow(0 0 12px rgba(255, 140, 40, 0.3));
+		}
+	}
+
+	/* Effort 1 — very slow dim red glow */
+	@keyframes glow-D {
+		0%, 100% { background: #ee4422; }
+		50% { background: #f8552e; }
+	}
+	@keyframes glow-halo {
+		0%, 100% {
+			filter: drop-shadow(0 0 2px rgba(200, 60, 30, 0.3))
+				drop-shadow(0 0 5px rgba(170, 40, 20, 0.18));
+		}
+		50% {
+			filter: drop-shadow(0 0 3px rgba(220, 75, 35, 0.4))
+				drop-shadow(0 0 7px rgba(190, 50, 25, 0.24));
+		}
+	}
+
+	/* Apply per-effort animations — all slowed substantially */
+	.ember.effort-1 .tD { animation: glow-D 3.6s ease-in-out infinite; }
+	.ember.effort-1 .ember-sprite { animation: glow-halo 3.6s ease-in-out infinite; }
+
+	.ember.effort-2 .tD { animation: ember-D 2.4s ease-in-out infinite; }
+	.ember.effort-2 .ember-sprite { animation: ember-halo 2.4s ease-in-out infinite; }
+
+	.ember.effort-3 .tD { animation: blaze-D 1.6s ease-in-out infinite; }
+	.ember.effort-3 .tC { animation: blaze-C 1.8s ease-in-out infinite; animation-delay: 0.2s; }
+	.ember.effort-3 .ember-sprite { animation: blaze-halo 1.6s ease-in-out infinite; }
+
+	/* Current week — bright outline + extra background warmth */
+	.ember.is-current {
+		outline: 1px solid rgba(255, 220, 100, 0.6);
+		outline-offset: 3px;
+	}
+	.ember.is-current::before {
+		content: '';
+		position: absolute;
+		inset: -6px;
+		background: radial-gradient(circle, rgba(255, 200, 80, 0.08), transparent 70%);
+		pointer-events: none;
+		border-radius: 50%;
+	}
+
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	/* Tablet */
+	@media (max-width: 720px) {
+		.embers-grid {
+			padding: 16px 12px;
+			gap: 10px;
+		}
+		.ember-row {
+			gap: 6px;
+		}
+		.ember {
+			min-height: 30px;
+		}
+	}
+
+	/* Mobile */
+	@media (max-width: 480px) {
+		.ember-row {
+			gap: 5px;
+		}
+		.ember {
+			min-height: 24px;
+		}
+	}
+</style>

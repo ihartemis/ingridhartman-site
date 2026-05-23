@@ -1,5 +1,20 @@
 ---
+import { getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+const posts = await getCollection('blog');
+const ships = await getCollection('ships');
+
+const latestBlogDate = posts
+	.map((p) => p.data.pubDate)
+	.sort((a, b) => b.valueOf() - a.valueOf())[0] ?? null;
+
+const latestShipDate = ships
+	.map((s) => s.data.date)
+	.sort((a, b) => b.valueOf() - a.valueOf())[0] ?? null;
+
+const lastBlogISO = latestBlogDate ? latestBlogDate.toISOString().split('T')[0] : null;
+const lastShipISO = latestShipDate ? latestShipDate.toISOString().split('T')[0] : null;
 ---
 
 <!doctype html>
@@ -173,6 +188,8 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		<nav class="home-nav">
 			<a href="/blog">Blog</a>
 			<span class="sep">/</span>
+			<a href="/ship">Ship</a>
+			<span class="sep">/</span>
 			<a href="/about">About</a>
 		</nav>
 
@@ -185,7 +202,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 			</div>
 		</div>
 
-		<script>
+		<script define:vars={{ lastBlogISO, lastShipISO }}>
 		// ============================================================
 		// CANVAS PIXEL ART SCENE RENDERER
 		// ============================================================
@@ -1042,16 +1059,37 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		// ============================================================
 
 		(function() {
-			const lastUpdated = '2026-02-20';
-
 			function daysSince(dateStr) {
+				if (!dateStr) return Infinity;
 				const then = new Date(dateStr);
 				const now = new Date();
 				return Math.floor((now.getTime() - then.getTime()) / (1000 * 60 * 60 * 24));
 			}
 
-			const days = daysSince(lastUpdated);
-			const recentlyUpdated = days <= 14;
+			const blogDays = daysSince(lastBlogISO);
+			const shipDays = daysSince(lastShipISO);
+			const blogRecent = blogDays <= 14;
+			const shipRecent = shipDays <= 30;
+
+			// 4-state yes-node text + choices
+			let yesText;
+			const yesChoices = [];
+
+			if (blogRecent && shipRecent) {
+				yesText = "She's been busy — writing by the fire, and out in the workshop too.";
+				yesChoices.push({ text: "Show me her writings.", next: 'adventures' });
+				yesChoices.push({ text: "Show me what she's built.", next: 'workshop' });
+			} else if (blogRecent && !shipRecent) {
+				yesText = "She was just here not long ago. Left some new writings by the fire.";
+				yesChoices.push({ text: "Tell me about her adventures.", next: 'adventures' });
+			} else if (!blogRecent && shipRecent) {
+				yesText = "She's been busy lately — out in the workshop. There's new things to see.";
+				yesChoices.push({ text: "Show me what she's built.", next: 'workshop' });
+			} else {
+				yesText = "We haven't seen her around here in a while. But there's plenty she's left behind.";
+				yesChoices.push({ text: "Tell me about her adventures.", next: 'adventures' });
+				yesChoices.push({ text: "Show me what she's built.", next: 'workshop' });
+			}
 
 			const tree = {
 				start: {
@@ -1062,17 +1100,19 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 					]
 				},
 				yes: {
-					text: recentlyUpdated
-						? "She was just here not long ago. Left some new writings by the fire."
-						: "We haven't seen her around here in a while. But she left her writings behind.",
-					choices: [
-						{ text: "Tell me about her adventures.", next: 'adventures' }
-					]
+					text: yesText,
+					choices: yesChoices
 				},
 				adventures: {
 					text: "Her chronicles are kept in the archives. All sorts of things in there — building, thinking, wandering.",
 					choices: [
 						{ text: "Take me there.", next: '/blog' }
+					]
+				},
+				workshop: {
+					text: "Her workshop's full of things — websites, posts, tools, scraps. Some big, some small.",
+					choices: [
+						{ text: "Take me there.", next: '/ship' }
 					]
 				},
 				who: {
@@ -1083,7 +1123,8 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 				}
 			};
 
-			const welcomeBackQuips = [
+			// Standard quips — always available
+			const baseQuips = [
 				{
 					text: "Back again? She still hasn't returned.",
 					choices: [
@@ -1120,6 +1161,28 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 					]
 				}
 			];
+
+			// Ship-aware quips — only added when something's been shipped recently
+			const shipQuips = [
+				{
+					text: "She's been at the workshop. New things to see if you want a look.",
+					choices: [
+						{ text: "Show me.", next: 'workshop' },
+						{ text: "What about her writings?", next: 'adventures' }
+					]
+				},
+				{
+					text: "Sounds of building from the workshop again.",
+					choices: [
+						{ text: "I'll take a look.", next: 'workshop' },
+						{ text: "Tell me about her instead.", next: 'who' }
+					]
+				}
+			];
+
+			const welcomeBackQuips = shipRecent
+				? baseQuips.concat(shipQuips)
+				: baseQuips;
 
 			const textEl = document.getElementById('dialogue-text');
 			const choicesEl = document.getElementById('choices');
