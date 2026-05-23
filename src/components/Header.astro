@@ -6,8 +6,9 @@ const isOnAbout = pathname.startsWith('/about');
 
 <header>
 	<nav>
-		<a class="back" href="/" aria-label="Home">&larr;</a>
 		<div class="nav-links">
+			<a href="/">Home</a>
+			<span class="sep">/</span>
 			<a href="/ship" class:list={[{ active: isOnShip }]}>Ship</a>
 			<span class="sep">/</span>
 			<a href="/about" class:list={[{ active: isOnAbout }]}>About</a>
@@ -31,20 +32,8 @@ const isOnAbout = pathname.startsWith('/about');
 	nav {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
+		justify-content: flex-end;
 		padding: 20px 24px;
-	}
-	.back {
-		font-family: 'DM Sans', sans-serif;
-		font-size: 13px;
-		font-weight: 500;
-		color: #c8c8d0;
-		text-decoration: none;
-		opacity: 0.25;
-		transition: opacity 0.2s;
-	}
-	.back:hover {
-		opacity: 0.9;
 	}
 	.nav-links {
 		display: flex;
