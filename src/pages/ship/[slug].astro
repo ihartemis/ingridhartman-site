@@ -46,17 +46,6 @@ const linkIsExternal = !!link && link.startsWith('http');
 				<FormattedDate date={ship.data.date} />
 			</header>
 
-			{link && (
-				<a
-					class="see-it-live"
-					href={link}
-					target={linkIsExternal ? '_blank' : '_self'}
-					rel={linkIsExternal ? 'noopener noreferrer' : undefined}
-				>
-					→ {linkLabel}
-				</a>
-			)}
-
 			{ship.data.thumbnail && (
 				<figure class="thumbnail">
 					<Image src={ship.data.thumbnail} alt={ship.data.title} />
@@ -65,6 +54,16 @@ const linkIsExternal = !!link && link.startsWith('http');
 
 			<article class="ship-body">
 				<Content />
+				{link && (
+					<a
+						class="see-it-live"
+						href={link}
+						target={linkIsExternal ? '_blank' : '_self'}
+						rel={linkIsExternal ? 'noopener noreferrer' : undefined}
+					>
+						→ {linkLabel}
+					</a>
+				)}
 			</article>
 
 			<hr class="divider" />
@@ -126,25 +125,6 @@ const linkIsExternal = !!link && link.startsWith('http');
 		letter-spacing: 0.03em;
 	}
 
-	.see-it-live {
-		display: inline-block;
-		color: var(--accent);
-		font-family: var(--font-heading);
-		font-size: 14px;
-		font-weight: 600;
-		text-decoration: none;
-		padding: 8px 0;
-		margin-bottom: 1.5em;
-		transition: all 0.15s;
-		text-shadow: 0 0 8px rgba(255, 200, 80, 0.2);
-	}
-	.see-it-live:hover {
-		color: #ffe88a;
-		text-decoration: underline;
-		text-decoration-color: rgba(255, 220, 120, 0.6);
-		text-underline-offset: 4px;
-	}
-
 	.thumbnail {
 		margin: 0 0 2em 0;
 		padding: 0;
@@ -161,6 +141,37 @@ const linkIsExternal = !!link && link.startsWith('http');
 		font-size: 16px;
 		line-height: 1.7;
 		color: var(--text);
+		/* Flex column lets us reorder children: first content block, then see-it-live link, then the rest. */
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* Default order for Content's rendered children. */
+	.ship-body :global(> *) {
+		order: 3;
+	}
+	/* First block of the body shows first. */
+	.ship-body :global(> *:first-child) {
+		order: 1;
+	}
+	/* See-it-live link slips in right after the first block. */
+	.ship-body > .see-it-live {
+		order: 2;
+		align-self: flex-start;
+		color: var(--accent);
+		font-family: var(--font-heading);
+		font-size: 14px;
+		font-weight: 600;
+		text-decoration: none;
+		margin: 0.2em 0 1.6em 0;
+		transition: all 0.15s;
+		text-shadow: 0 0 8px rgba(255, 200, 80, 0.2);
+	}
+	.ship-body > .see-it-live:hover {
+		color: #ffe88a;
+		text-decoration: underline;
+		text-decoration-color: rgba(255, 220, 120, 0.6);
+		text-underline-offset: 4px;
 	}
 
 	.ship-body :global(p) {
