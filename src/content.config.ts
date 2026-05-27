@@ -15,10 +15,11 @@ const ships = defineCollection({
 			project: z.string(),
 			// Tools used to make it (free-form, lowercase-kebab-case).
 			tools: z.array(z.string()).optional(),
-			// Hero image for the future Collection page. Not rendered on the detail page.
+			// Hero image rendered at the top of the detail page (below the title, above the body).
+			// Also reserved for the future Collection page.
 			// `.nullable()` allows YAML `thumbnail:` (empty value) — same intent as omitting the field.
 			thumbnail: image().nullable().optional(),
-			// Before/after pair for visual progression. Render side-by-side at the top of the detail page.
+			// Before/after pair for visual progression. Render side-by-side at the bottom of the detail page (after the body).
 			// Either, both, or neither can be set.
 			before: image().nullable().optional(),
 			after: image().nullable().optional(),
