@@ -6,9 +6,9 @@ medium: web
 project: artemisnova
 tools:
   - claude-code
-thumbnail:
-before:
-after:
+thumbnail: ./2026-05-22-artemisnova-launch/thumbnail.png
+before: ./2026-05-22-artemisnova-launch/before.png
+after: ./2026-05-22-artemisnova-launch/after.png
 link: https://artemisnova.com
 ---
 

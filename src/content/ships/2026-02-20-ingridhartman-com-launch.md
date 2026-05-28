@@ -7,9 +7,9 @@ project: ingridhartman
 tools:
   - claude-code
   - astro
-thumbnail:
-before:
-after:
+thumbnail: ./2026-02-20-ingridhartman-com-launch/thumbnail.png
+before: ./2026-02-20-ingridhartman-com-launch/before.png
+after: ./2026-02-20-ingridhartman-com-launch/after.png
 link: https://ingridhartman.com
 ---
 A weird thought in the middle of the night...why aren't websites more fun? An image popped in my head - an old man by the campfire in the middle of the night. "Welcome weary traveler...I hear you're looking for Ingrid." Months later with Claude's help, my weird personal website became a reality in a 2 hr ShipSLC build session!

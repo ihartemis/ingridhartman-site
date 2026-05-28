@@ -6,7 +6,8 @@ medium: web
 project: ingridhartman
 tools:
   - claude-code
-thumbnail:
+before: ./2026-05-22-shipped-the-ship-log/before.png
+after: ./2026-05-22-shipped-the-ship-log/after.png
 link: https://ingridhartman.com/ship
 ---
 

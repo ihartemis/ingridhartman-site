@@ -7,9 +7,7 @@ project: shipslc
 tools:
   - luma
   - canva
-thumbnail:
-before:
-after:
+thumbnail: ./2026-02-15-shipslc-rebrand/thumbnail.png
 link: https://luma.com/shipslc
 ---
 Meetup was going to cost $540/yr without pulling any new people in, was a total waste of money. I migrated to Luma.com to host my event calendar and never looked back!

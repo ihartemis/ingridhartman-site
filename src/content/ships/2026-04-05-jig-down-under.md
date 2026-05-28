@@ -7,9 +7,7 @@ project: ingridhartman
 tools:
   - claude-code
   - vercel
-thumbnail:
-before:
-after:
+thumbnail: ./2026-04-05-jig-down-under/thumbnail.png
 link: https://jig-down-under.vercel.app
 ---
 

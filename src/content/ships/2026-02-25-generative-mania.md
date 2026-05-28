@@ -7,9 +7,7 @@ project: ingridhartman
 tools:
   - claude-code
   - vercel
-thumbnail:
-before:
-after:
+thumbnail: ./2026-02-25-generative-mania/thumbnail.png
 link: https://generativemania.com
 ---
 
