@@ -87,8 +87,10 @@ const linkIsExternal = !!link && link.startsWith('http');
 
 			<footer class="meta">
 				<div class="meta-row">
+					{ship.data.kind === 'release' && <span class="chip kind-release">Release notes</span>}
 					<span class={`chip medium-${ship.data.medium}`}>{ship.data.medium}</span>
-					<span class={`chip project project-${ship.data.project}`}>{ship.data.project}</span>
+					<a class={`chip project project-${ship.data.project}`} href={`/ship?project=${ship.data.project}`}>{ship.data.project}</a>
+					{ship.data.build && <span class="chip">build {ship.data.build}</span>}
 				</div>
 				{ship.data.tools && ship.data.tools.length > 0 && (
 					<div class="meta-row tools-row">
@@ -368,6 +370,18 @@ const linkIsExternal = !!link && link.startsWith('http');
 	.chip.medium-app     { color: #b08fc4; border-color: rgba(176, 143, 196, 0.25); }
 	.chip.medium-media   { color: #7faab4; border-color: rgba(127, 170, 180, 0.25); }
 	.chip.medium-other   { color: var(--text-dim); }
+
+	a.chip {
+		text-decoration: none;
+	}
+	a.chip:hover {
+		color: var(--text-bright);
+		border-color: rgba(255, 160, 60, 0.4);
+	}
+	.chip.kind-release {
+		color: var(--text-bright);
+		opacity: 0.85;
+	}
 
 	.chip.tool {
 		text-transform: lowercase;

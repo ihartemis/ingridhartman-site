@@ -25,6 +25,11 @@ const ships = defineCollection({
 			after: image().nullable().optional(),
 			// Optional — only when the artifact lives elsewhere (live URL, repo, app store, Loom).
 			link: z.string().optional(),
+			// Who wrote it. `post` = Ingrid. `release` = generated release notes (labeled on the site).
+			kind: z.enum(['post', 'release']).default('post'),
+			// Optional provenance for release entries.
+			pr: z.number().int().optional(),
+			build: z.number().int().optional(),
 		}),
 });
 
