@@ -1,5 +1,5 @@
 ---
-title: "One bottom-sheet system"
+title: "Bottom sheets"
 date: 2026-07-26
 effort: 1
 medium: app
@@ -9,6 +9,5 @@ build: 84
 tools: [claude-code, expo]
 ---
 
-- Every bottom sheet in the app runs on one primitive that sizes to its content, keyboard forms included. The kid sheet no longer opens onto a giant empty void, and Save always sees what was typed.
-- Drag-to-dismiss was fixed: sheets exit by their real height instead of snapping back to open for a frame.
-- The third-party sheet library has no remaining imports; the dependency itself leaves with the next native build.
+- **Sheets fit their content** — Every bottom sheet sizes to what is in it, keyboard forms included, so the kid sheet opens at the right height and Save always sees what was typed.
+- **Drag to dismiss** — Sheets close cleanly when you drag them down.

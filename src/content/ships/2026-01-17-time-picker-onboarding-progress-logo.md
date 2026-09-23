@@ -1,5 +1,5 @@
 ---
-title: "Time picker rebuilt, onboarding progress, new logo"
+title: "New time picker and logo"
 date: 2026-01-17
 effort: 2
 medium: app
@@ -9,8 +9,7 @@ build: 73
 tools: [expo, eas, convex, clerk, logrocket, cursor]
 ---
 
-- Choosing a time when creating an event uses a new calendar-style time picker, with separate native and web versions. The bottom sheets around it were restyled after they rendered badly in the previous build.
-- Onboarding now shows progress by section instead of a numbered step count.
-- The sign-in screen and splash screen show the OurNanny logo, replacing the framework's placeholder React logo that had shipped in every build so far.
-- Household tags were removed from the home profile form, and the forgot-password screen was reworded.
-- Session recording (LogRocket) was added to the native app so problems a tester hit could be replayed rather than described.
+- **Time picker** — Choosing a time when creating a session uses a new calendar-style picker, with versions tuned for phone and for web.
+- **Onboarding progress** — Progress shows by section rather than a numbered step count.
+- **OurNanny logo** — The sign-in and splash screens carry the OurNanny logo.
+- **Profile and password copy** — Household tags came off the home profile form, and the forgot-password screen was reworded.

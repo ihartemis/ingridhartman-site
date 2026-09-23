@@ -95,6 +95,7 @@ const subtitle = yearCount === 0
 											<div class="ship-title-row">
 												<h3 class="ship-title">
 													<a href={`/ship/${ship.id}`}>{ship.data.title}</a>
+													{ship.data.effort === 3 && <span class="major-label">New feature</span>}
 													{ship.data.kind === 'release' && <span class="release-label">Release notes</span>}
 												</h3>
 												<FormattedDate date={ship.data.date} />
@@ -218,6 +219,23 @@ const subtitle = yearCount === 0
 		outline-offset: 2px;
 	}
 
+	/* Effort 3. Reads as "New feature", not "Major" — it's for a reader, not a release manager. */
+	.major-label {
+		display: inline-block;
+		vertical-align: middle;
+		margin-left: 0.6em;
+		font-size: 9px;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.11em;
+		color: var(--accent);
+		padding: 2px 7px;
+		background: rgba(255, 204, 51, 0.16);
+		border: 1px solid rgba(255, 204, 51, 0.35);
+		border-radius: 10px;
+		white-space: nowrap;
+	}
+
 	.release-label {
 		display: inline-block;
 		vertical-align: middle;
@@ -288,13 +306,29 @@ const subtitle = yearCount === 0
 		transition: all 0.15s;
 	}
 
+	/* Effort is the only size axis the log has. Until 2026-09-22 it rendered as a
+	   near-invisible border alpha, so a major feature read the same as a copy tweak. */
 	.ship.effort-3 {
-		border-left-color: rgba(255, 200, 80, 0.4);
-		background: rgba(255, 200, 80, 0.025);
+		border-left-width: 3px;
+		border-left-color: var(--accent);
+		background: linear-gradient(90deg, rgba(255, 204, 51, 0.055), rgba(255, 204, 51, 0.012) 60%, transparent);
 	}
 
 	.ship.effort-2 {
 		border-left-color: rgba(200, 130, 50, 0.25);
+	}
+
+	.ship.effort-1 {
+		opacity: 0.78;
+	}
+
+	.ship.effort-3 .ship-title {
+		font-size: 18px;
+	}
+
+	.ship.effort-1 .ship-title {
+		font-size: 15px;
+		font-weight: 500;
 	}
 
 	.ship:hover {

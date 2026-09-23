@@ -1,5 +1,5 @@
 ---
-title: "Add a co-parent to your family"
+title: "Co-parent invites"
 date: 2026-06-17
 effort: 2
 medium: app
@@ -9,8 +9,7 @@ build: 79
 tools: [claude-code, expo, convex, clerk]
 ---
 
-- A parent can add their partner from an "Add your partner" screen: name and phone number in, an invite code and a ready-to-send text out. The partner joins the same family, so a couple is one household with one balance.
-- Manage Family lists co-parents who have not activated yet, and an admin can edit or remove a pending co-parent. Re-inviting the same number updates the existing invite instead of creating a duplicate.
-- A co-parent who types an invite code skips the create-a-family steps and goes straight to confirming the family they were invited to.
-- Fixed invite codes that could not be redeemed, and a false "Failed to join" error that appeared after a join had actually succeeded.
-- The first co-parent joined the beta live on a real phone during this work.
+- **Add your partner** — A parent enters their partner's name and phone number and gets an invite code plus a ready-to-send text. The partner joins the same family, so a couple is one household with one balance.
+- **Pending co-parents** — Manage Family lists co-parents who have not activated yet, and an admin can edit or remove one. Re-inviting the same number updates the existing invite rather than making a duplicate.
+- **Joining by code** — A co-parent who types an invite code skips the create-a-family steps and goes straight to confirming the family they were invited to.
+- **Invite reliability** — Invite codes redeem cleanly, and a join that succeeds says so.

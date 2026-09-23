@@ -136,6 +136,13 @@ const publishOne = (vaultPath) => {
       fmOut = fmOut.replace(new RegExp(`^${role}:\\s*$\\n?`, 'm'), '')
     }
   }
+  // Private-repo links never publish. The OurNanny repo is private, so a `link:` pointing
+  // at github.com is a dead link for every reader and leaks the org name and PR cadence.
+  // `pr:` / `covers:` / `build:` stay in the vault copy as the record; they're dropped here.
+  // Rule: ship-log/release-entry-rules.md (2026-09-22).
+  fmOut = fmOut.replace(/^link:\s*https?:\/\/(www\.)?github\.com\/\S*\s*$\n?/im, '')
+  fmOut = fmOut.replace(/^(pr|covers):\s*.*$\n?/gim, '')
+
   fmOut = fmOut.replace(/\n{2,}/g, '\n').trim()
 
   const out = `---\n${fmOut}\n---\n\n${body}`

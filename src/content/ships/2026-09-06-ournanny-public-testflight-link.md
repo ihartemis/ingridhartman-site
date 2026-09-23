@@ -1,5 +1,5 @@
 ---
-title: "The iPhone beta opens to anyone"
+title: "Public iPhone beta"
 date: 2026-09-06
 effort: 3
 medium: other
@@ -9,6 +9,5 @@ build: 89
 tools: [testflight, claude-code]
 ---
 
-- Until now every tester got into OurNanny by phone-number invite. A public TestFlight link is live, capped at 1,000 testers, and linked from every button on ournanny.app.
-- The link serves the current build, so a stranger installs the same app the founder's pod uses, on production accounts, with crash reporting on.
-- The first outside installs arrived within a day: an Apple reviewer, then two strangers from a Reddit ad.
+- **Public beta link** — Anyone with an iPhone can install OurNanny from a public TestFlight link. No phone-number invite needed, and every button on ournanny.app opens it.
+- **The same app** — The link serves the current build, running on production accounts with crash reporting on, so a new tester gets exactly what everyone else is using.

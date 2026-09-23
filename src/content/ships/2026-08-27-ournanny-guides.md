@@ -1,18 +1,16 @@
 ---
-title: "Guides: a shelf for what the pod is learning together"
+title: "Guides on the Pod tab"
 date: 2026-08-27
 effort: 2
 medium: app
 project: ournanny
 kind: release
-pr: 17
 build: 84
-link: https://github.com/Artemis-Nova-Product/ournanny/pull/17
 tools: [claude-code, expo, convex]
 ---
 
-- The Pod tab has a new Guides section for the things a pod is learning together. First up: a potty-training plan as a written guide and an audio summary, in English for the parents and Spanish for the nanny.
-- When something big is coming up, a "Coming up" card on Today links straight to the guide.
-- Guides are organized by topic: one Guides row on the Pod tab opens a topic list, and each topic opens its written and audio content.
-- The nanny can read every guide her pod shares. A guide the employer could not share with her would miss the point.
-- Audio guides play in the phone's built-in player, so nothing new had to be installed.
+- **Guides** — The Pod tab has a new Guides section for what a pod is learning together. The first is a potty-training plan, written and as an audio summary, in English and in Spanish.
+- **Coming up card** — When something big is on the calendar, a card on Today links straight to the guide.
+- **Organized by topic** — One Guides row on the Pod tab opens a topic list, and each topic opens its written and audio content.
+- **The nanny sees them too** — Every guide a pod shares is readable by the nanny.
+- **Audio** — Audio guides play in the phone's built-in player.

@@ -1,5 +1,5 @@
 ---
-title: "Fixed a Save button that did nothing"
+title: "Saving hours on repeats"
 date: 2026-07-24
 effort: 1
 medium: app
@@ -9,5 +9,5 @@ build: 82
 tools: [claude-code, expo, convex]
 ---
 
-- Fixed: on a repeating session, saving a kid's hours did nothing. No error, no close. The "this session only / this and future" question was supposed to appear and never did.
-- The question is now a second step inside the same sheet. Save shows the two options; Back returns to the hours with the draft intact.
+- Saving a kid's hours on a repeating session asks "this session only" or "this and future sessions" as a second step inside the same sheet, then saves.
+- Back returns to the hours with the draft intact.

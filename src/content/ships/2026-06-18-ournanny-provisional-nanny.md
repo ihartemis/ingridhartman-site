@@ -1,5 +1,5 @@
 ---
-title: "Set up the nanny before she logs in"
+title: "Set up your nanny"
 date: 2026-06-18
 effort: 2
 medium: app
@@ -9,7 +9,7 @@ build: 79
 tools: [claude-code, expo, convex, clerk]
 ---
 
-- An admin can set up the nanny by phone number: name, rates, how many kids at once, and an optional bio. She can be assigned to sessions right away, and her first sign-in with that number claims the profile.
-- Rates are entered per kid with a live total, and the phone field strips a pasted +1.
-- An assigned nanny is a working nanny. The RSVP and "awaiting confirmation" flow was removed entirely; it gated nothing real and added a step to every session.
-- Admins can edit or remove a pending nanny from the Pod tab, and a nanny can be assigned or swapped with a tap on the session's nanny tile.
+- **Nanny profile up front** — An admin can set up the nanny by phone number: name, rates, how many kids at once, and an optional bio. She can be assigned to sessions right away, and her first sign-in with that number claims the profile.
+- **Rates per kid** — Rates are entered per kid, with a running total as you go.
+- **Assigned means working** — An assigned nanny is on the session. The separate RSVP and awaiting-confirmation step is gone.
+- **Managing the nanny** — Admins can edit or remove a nanny who has not signed in yet, and assign or swap the nanny on a session with a tap on its nanny tile.

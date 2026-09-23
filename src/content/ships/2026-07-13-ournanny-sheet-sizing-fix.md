@@ -1,5 +1,5 @@
 ---
-title: "Fixed clipped and oversized bottom sheets"
+title: "Bottom sheet sizing"
 date: 2026-07-13
 effort: 1
 medium: app
@@ -9,5 +9,5 @@ build: 82
 tools: [claude-code, expo]
 ---
 
-- Content sheets, like the cost breakdown and assign-nanny sheets, size to their content on every phone instead of clipping tall content on one device and leaving dead space on another.
-- The clipped dollar amount at the top of the cost sheet was a text line-height bug, not the sheet. Any large text without an explicit line height now gets one automatically, app-wide.
+- Content sheets, like the cost breakdown and assign-nanny sheets, size to their content on every phone.
+- Large text now always gets an explicit line height, so headline amounts render in full across the app.

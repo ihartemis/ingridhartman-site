@@ -1,5 +1,5 @@
 ---
-title: "The Pod tab rebuilt as the Share tab"
+title: "Share tab rebuilt"
 date: 2026-07-11
 effort: 2
 medium: app
@@ -9,8 +9,7 @@ build: 81
 tools: [claude-code, expo, convex]
 ---
 
-- The Pod tab became the Share tab: one flat hub with the nanny's card, a card per family led by its kids, and app settings at the bottom. Cards are the tap targets; the old "Manage ___ >" rows are gone.
-- One family screen behind every card, aware of who is looking: admins can edit anything, parents edit their own family, and everyone else gets a clean read-only view. The one thing nobody edits for someone else is an active person's sign-in phone number.
-- Every invited person shows a compact chip with their live invite code, tap to copy, and a "Text invite" button. A lost invite text is no longer fatal.
-- Rates live in one sheet that asks how many kids at once first, then shows a rate field per count. Rates are owned by the admin and the nanny together.
-- Thirteen screens were deleted and three created; the app is about 1,500 lines smaller.
+- **One hub** — The Share tab is a single flat hub: the nanny's card, a card per family led by its kids, and app settings at the bottom. The cards themselves are the tap targets.
+- **One family screen** — Every card opens the same family screen, aware of who is looking. Admins can edit anything, parents edit their own family, and everyone else gets a clean read-only view. Nobody edits an active person's sign-in phone number for them.
+- **Invite chips** — Each invited person shows a compact chip with their live invite code, tap to copy, and a "Text invite" button, so an invite is easy to resend.
+- **Rates in one sheet** — Rates ask how many kids at once first, then show a rate field per count. The admin and the nanny own them together.

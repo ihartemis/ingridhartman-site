@@ -1,18 +1,15 @@
 ---
-title: "Fixes from the first outside users"
+title: "Sheet errors and tracking"
 date: 2026-09-07
 effort: 1
 medium: app
 project: ournanny
 kind: release
-pr: 25
 build: 89
-link: https://github.com/Artemis-Nova-Product/ournanny/pull/25
 tools: [claude-code, expo, convex, sentry, posthog]
 ---
 
-- Errors inside a bottom sheet were invisible: the message rendered underneath the native sheet. Sheets and the away modal now show their own errors.
-- Creating a pod now registers the onboarding-completed and pod-created events. They had only been wired for people joining by invite; a Brooklyn family's full setup showed the gap.
-- The record-payment button waits until the app knows the user's role instead of briefly rendering for the wrong person.
-- Masking in session recordings now covers sheet bodies, the away modal, and the billing family switcher, which rendered outside the masked tree.
-- Install-to-signup tracking was broken: the anonymous id was reset several times per install, so every new user looked like a fresh visitor. Fixed. App-hang reports now need five seconds, after the first one turned out to be the iOS keyboard autofill.
+- **Errors in sheets** — Bottom sheets and the away modal now show their own error messages, in front of the sheet where you can read them.
+- **Record payment** — The record-payment button waits until the app knows your role before it appears.
+- **Recording privacy** — Masking in session recordings now covers sheet bodies, the away modal, and the billing family switcher.
+- **Signup analytics** — Creating a pod registers the onboarding-completed and pod-created events, and each install keeps one identity, so a new account reads as a new account.

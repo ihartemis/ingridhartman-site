@@ -1,19 +1,16 @@
 ---
-title: "Multi-nanny polish from the first real day"
+title: "Multi-nanny polish"
 date: 2026-09-12
 effort: 2
 medium: app
 project: ournanny
 kind: release
-pr: 42
 build: 90
-link: https://github.com/Artemis-Nova-Product/ournanny/pull/42
 tools: [claude-code, expo, convex]
 ---
 
-- Photos now show everywhere they were missing: a nanny or kid who uploaded a photo after signing up by phone was showing as an initial on the Pod tab, schedule tiles and Today. One shared lookup now checks the uploaded photo first.
-- Today merges a day's sessions at the same house into one timeline whatever the gap between them, so the hours between a morning and an afternoon nanny no longer repeat. The nanny's photo rides the rail even when the pod has one nanny, and a lone kid gets a wider capsule and a bigger avatar.
-- Today's chips use names ("Leila & Griffin today") and, before anything has started, describe the whole day ("Leila then Soledad · Griffin"). Today also has a "+" to add a session on the day you're looking at.
-- Creating a session preselects your own kids and your own house, and days that already have a session show a "+ Add" for a second one.
-- Fixed the rate fields on "Set up your nanny" showing "$NaN" after deleting and retyping a number.
-- The billing activity list shows the nanny's first name and the time range only; hours, kids and rate appear when you expand a row. The "+ Add another nanny" row lost its subtitle.
+- **Photos everywhere** — A nanny or kid who uploads a photo after signing up now shows it on the Pod tab, schedule tiles, and Today, instead of an initial.
+- **One timeline a day** — Today merges a day's sessions at the same house into one timeline whatever the gap between them. A lone kid gets a wider capsule and a bigger avatar.
+- **Day at a glance** — Today's chips name who's coming ("Maria & Theo today"), and before anything starts they describe the whole day ("Maria then Dana · Theo").
+- **Faster scheduling** — Creating a session preselects your own kids and your own house, and a "+" on Today adds one to the day you're looking at.
+- **Billing rows** — The activity list shows the nanny's first name and time range, with hours, kids, and rate when you expand a row.

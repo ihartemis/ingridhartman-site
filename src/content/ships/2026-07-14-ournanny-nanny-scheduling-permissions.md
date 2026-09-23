@@ -1,5 +1,5 @@
 ---
-title: "The nanny can run the schedule"
+title: "Nanny scheduling"
 date: 2026-07-14
 effort: 2
 medium: app
@@ -9,6 +9,6 @@ build: 82
 tools: [claude-code, expo, convex]
 ---
 
-- The nanny can create sessions at any house in the pod, change times and locations, add or remove any kid, cancel, and assign or unassign herself. Repeating series included. Before this she could only look.
-- Fixed a crash when the nanny tapped Add on the schedule: she has no family of her own, and the wizard assumed everyone did.
-- Nannies cannot manage the pod's people. Inviting parents was closed off, including a gap where any member could generate an invite code.
+- **The nanny can schedule** — The nanny can create sessions at any house in the pod, change times and locations, add or remove any kid, cancel, and assign or unassign herself. Repeating series included.
+- **Adding as the nanny** — The add-session wizard works for someone who has no family of their own.
+- **People stay with admins** — Managing the pod's people, including inviting parents, stays with admins.

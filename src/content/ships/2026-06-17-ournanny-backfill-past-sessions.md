@@ -1,5 +1,5 @@
 ---
-title: "Log sessions that already happened"
+title: "Logging past sessions"
 date: 2026-06-17
 effort: 1
 medium: app
@@ -9,5 +9,5 @@ build: 79
 tools: [claude-code, expo, convex]
 ---
 
-- Sessions can be added up to 30 days in the past. Before this the app only accepted future times, so a parent could not log the week's sessions after the fact, and billing had nothing to bill.
-- The day-view date pickers open to past dates too, so a backfilled session can be found once it is logged.
+- **Past sessions** — A session can be logged up to 30 days after it happened, so a week of care can be recorded after the fact and billed.
+- **Date pickers** — The day-view date pickers open to past dates, so a backfilled session is easy to find again.

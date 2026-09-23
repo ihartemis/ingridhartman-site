@@ -1,13 +1,11 @@
 ---
-title: "Today's kid capsules get an edge"
+title: "Kid capsules on Today"
 date: 2026-09-12
 effort: 1
 medium: app
 project: ournanny
 kind: release
-pr: 45
 build: 90
-link: https://github.com/Artemis-Nova-Product/ournanny/pull/45
 tools: [claude-code, expo]
 ---
 

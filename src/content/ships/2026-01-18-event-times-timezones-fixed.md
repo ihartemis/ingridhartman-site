@@ -1,5 +1,5 @@
 ---
-title: "Event times fixed across timezones"
+title: "Event times and time zones"
 date: 2026-01-18
 effort: 2
 medium: app
@@ -9,7 +9,6 @@ build: 77
 tools: [expo, eas, convex, clerk, cursor]
 ---
 
-- Fixed events showing different times in different places. The time chosen when creating an event now stays as picked until save, then converts once using the host home's timezone, so a 9 AM event reads 9 AM on the event, on Today, and in the nanny's view.
-- Time validation now rejects events that would cross midnight, and a child's attendance is stored as timestamps instead of clock strings so the same fix applies to per-child hours.
-- The hosting-capacity question (how many children a home can take) returned to onboarding after being dropped in an earlier build.
-- Under the hood, events are stored by start time rather than a separate date field, which is what made the fix possible.
+- **Consistent times** — An event reads the same everywhere it appears — on the event itself, on Today, and in the nanny's view — anchored to the host home's time zone.
+- **Time validation** — An event that would cross midnight is rejected up front, and each child's attendance is stored as an exact point in time rather than a clock reading.
+- **Hosting capacity** — Onboarding asks how many children a home can take.

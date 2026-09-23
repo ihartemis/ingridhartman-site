@@ -1,5 +1,5 @@
 ---
-title: "Build 78 with onboarding fixes and toasts"
+title: "Onboarding confirmations and fixes"
 date: 2026-01-22
 effort: 2
 medium: app
@@ -9,7 +9,6 @@ build: 78
 tools: [expo, eas, convex, clerk, cursor]
 ---
 
-- Onboarding confirms what just happened with a toast message when a pod is created or joined and when children are added, instead of moving on silently.
-- A nanny who creates a pod during onboarding is now sent to the age-confirmation step, not the parents' add-children step she was landing on.
-- Creating a pod no longer fails outright when the accounts service errors mid-request; the app recovers and finishes the setup.
-- Build 78 was the last native build for four months. The fixes after it arrived over the air on the same build.
+- **Confirmations** — Creating or joining a pod and adding children each confirm with a short message instead of moving on silently.
+- **Nanny onboarding path** — A nanny who creates a pod continues to the age-confirmation step, the right next step for her role.
+- **Resilient setup** — Creating a pod recovers and finishes if the account service hiccups mid-request.
